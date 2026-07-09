@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#1C1917;
+  --surface:#242420;
+  --border:rgba(255,255,255,.1);
+  --cream:#F3EFE6;
+  --text:rgba(232,228,220,.92);
+  --muted:rgba(156,149,144,.8);
+  --purple:#7B5EA7;
+  --purple-l:#9B7EC8;
+  --green:#16a34a;
+  --green-l:#4ade80;
+  --orange:#E87D2E;
+  --red:#ef4444;
+}
+html,body{
+  width:320px;height:88px;
+  overflow:hidden;
+  background:transparent;
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  user-select:none;
+}
+/* The floating pill */
+.pill{
+  position:fixed;
+  bottom:20px; right:20px;
+  width:300px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:14px 18px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.55),
+    0 2px 8px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  opacity:0;
+  transform:translateY(16px) scale(.96);
+  transition:opacity .35s cubic-bezier(.34,1.56,.64,1),
+             transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.pill.visible{opacity:1;transform:translateY(0) scale(1);}
+.pill.hiding{opacity:0;transform:translateY(10px) scale(.97);transition:opacity .28s ease,transform .28s ease;}
+
+/* Logo mark — bar chart */
+.logo{
+  display:flex;align-items:flex-end;gap:2.5px;height:16px;flex-shrink:0;
+  transition:opacity .3s;
+}
+.logo-bar{width:4px;border-radius:2px;background:var(--text);transition:height .4s ease,background .3s;}
+
+/* State indicator dot */
+.dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  transition:background .3s,box-shadow .3s;
+}
+
+/* Labels */
+.labels{flex:1;min-width:0;}
+.lbl-main{font-size:.82rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:3px;transition:color .3s;}
+.lbl-sub{font-size:.7rem;color:var(--muted);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s;}
+
+/* Timer */
+.timer{
+  font-size:.75rem;font-weight:700;color:var(--green-l);
+  font-variant-numeric:tabular-nums;
+  display:none;flex-shrink:0;
+  transition:opacity .25s;
+}
+
+/* Waveform bars */
+.wave{
+  display:none;align-items:center;gap:2px;height:24px;flex-shrink:0;
+}
+.wb{
+  width:3px;border-radius:2px;background:var(--green-l);
+  animation:waveBounce 1.1s ease-in-out infinite;
+}
+.wb:nth-child(1){height:5px;animation-delay:.00s;}
+.wb:nth-child(2){height:10px;animation-delay:.07s;}
+.wb:nth-child(3){height:18px;animation-delay:.14s;}
+.wb:nth-child(4){height:22px;animation-delay:.21s;}
+.wb:nth-child(5){height:14px;animation-delay:.28s;}
+.wb:nth-child(6){height:20px;animation-delay:.35s;}
+.wb:nth-child(7){height:10px;animation-delay:.28s;}
+.wb:nth-child(8){height:16px;animation-delay:.21s;}
+.wb:nth-child(9){height:6px;animation-delay:.14s;}
+@keyframes waveBounce{
+  0%,100%{transform:scaleY(.3);opacity:.35;}
+  50%{transform:scaleY(1);opacity:1;}
+}
+
+/* Spinner */
+.spinner{
+  display:none;
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid rgba(123,94,167,.25);
+  border-top-color:var(--purple-l);
+  animation:spin .7s linear infinite;
+  flex-shrink:0;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Streaming pulse dots */
+.streaming-dots{
+  display:none;align-items:center;gap:4px;flex-shrink:0;
+}
+.sd{
+  width:5px;height:5px;border-radius:50%;background:var(--purple-l);
+  animation:sdPulse 1.2s ease-in-out infinite;
+}
+.sd:nth-child(2){animation-delay:.2s;}
+.sd:nth-child(3){animation-delay:.4s;}
+@keyframes sdPulse{
+  0%,100%{transform:scale(.5);opacity:.3;}
+  50%{transform:scale(1);opacity:1;}
+}
+
+/* Done checkmark */
+.check{
+  display:none;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(22,163,74,.18);border:1.5px solid rgba(22,163,74,.35);
+  align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.check svg{stroke:var(--green-l);}
+
+/* Progress bar at bottom */
+.progress{
+  position:absolute;bottom:6px;left:16px;right:16px;height:2px;
+  background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;
+  display:none;
+}
+.progress-fill{
+  height:100%;width:0%;border-radius:2px;
+  background:linear-gradient(to right,var(--purple),var(--purple-l));
+  animation:progressPulse 2s ease-in-out infinite;
+}
+@keyframes progressPulse{
+  0%{width:0%;opacity:.5;}50%{width:70%;opacity:1;}100%{width:100%;opacity:.5;}
+}
+
+/* Error shake */
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  20%,60%{transform:translateX(-5px);}
+  40%,80%{transform:translateX(5px);}
+}
+.shake{animation:shake .35s ease;}
+
+/* Scroll area for streaming text */
+.stream-text{
+  display:none;
+  font-size:.68rem;color:var(--purple-l);
+  font-style:italic;overflow:hidden;
+  max-width:160px;white-space:nowrap;
+  text-overflow:ellipsis;
+}
+</style>
+</head>
+<body>
+<div class="pill" id="pill">
+  <!-- Logo -->
+  <div class="logo" id="logo">
+    <div class="logo-bar" style="height:9px;" id="lb1"></div>
+    <div class="logo-bar" style="height:14px;" id="lb2"></div>
+    <div class="logo-bar" style="height:7px;" id="lb3"></div>
+    <div class="logo-bar" style="height:11px;" id="lb4"></div>
+  </div>
+
+  <!-- State dot -->
+  <div class="dot" id="dot" style="background:rgba(156,149,144,.5);"></div>
+
+  <!-- Labels -->
+  <div class="labels">
+    <div class="lbl-main" id="lblMain">Flow</div>
+    <div class="lbl-sub" id="lblSub">Waiting for hotkey…</div>
+  </div>
+
+  <!-- Animated elements (only one shown at a time) -->
+  <div class="timer" id="timer">00:00</div>
+
+  <div class="wave" id="wave">
+    <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+    <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+    <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+  </div>
+
+  <div class="spinner" id="spinner"></div>
+
+  <div class="streaming-dots" id="streamingDots">
+    <div class="sd"></div><div class="sd"></div><div class="sd"></div>
+  </div>
+
+  <div class="check" id="check">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
+
+  <!-- Progress bar (streaming) -->
+  <div class="progress" id="progress">
+    <div class="progress-fill"></div>
+  </div>
+</div>
+
+<script>
+/* ────────────────────────────────────────────
+   Flow Overlay — WebSocket state display
+   Connects to service.py WebSocket on port 8765
+   ──────────────────────────────────────────── */
+
+const pill          = document.getElementById('pill');
+const dot           = document.getElementById('dot');
+const lblMain       = document.getElementById('lblMain');
+const lblSub        = document.getElementById('lblSub');
+const timer         = document.getElementById('timer');
+const wave          = document.getElementById('wave');
+const spinner       = document.getElementById('spinner');
+const streamingDots = document.getElementById('streamingDots');
+const check         = document.getElementById('check');
+const progress      = document.getElementById('progress');
+const lb1           = document.getElementById('lb1');
+const lb2           = document.getElementById('lb2');
+const lb3           = document.getElementById('lb3');
+const lb4           = document.getElementById('lb4');
+
+let timerInterval = null;
+let timerSec = 0;
+let hideTimeout = null;
+let wsRetry = null;
+
+/* ── State definitions ── */
+const STATES = {
+  idle:       { dot:'rgba(156,149,144,.5)',  main:'Flow',          sub:'Hold Ctrl to record',          show:[],                   autohide:3000  },
+  recording:  { dot:'#4ade80',              main:'Recording',      sub:'Release Ctrl to stop…',        show:['wave','timer'],      autohide:null  },
+  processing: { dot:'#7B5EA7',             main:'Transcribing',   sub:'Sending to Groq Whisper…',     show:['spinner'],          autohide:null  },
+  polishing:  { dot:'#9B7EC8',             main:'Polishing',      sub:'AI cleaning your text…',       show:['spinner'],          autohide:null  },
+  typing:     { dot:'#9B7EC8',             main:'Typing',         sub:'',                             show:['streamingDots'],    autohide:null  },
+  done:       { dot:'#4ade80',             main:'Done ✨',         sub:'Text typed successfully',      show:['check'],            autohide:1800  },
+  no_speech:  { dot:'#E87D2E',             main:'No speech',      sub:'Try speaking louder',          show:[],                   autohide:2200  },
+  error:      { dot:'#ef4444',             main:'Error',          sub:'',                             show:[],                   autohide:2500  },
+};
+
+/* ── Apply a state ── */
+function applyState(key, text) {
+  const cfg = STATES[key] || STATES.idle;
+
+  // Update dot
+  dot.style.background = cfg.dot;
+  dot.style.boxShadow  = `0 0 8px ${cfg.dot}80`;
+
+  // Update labels
+  lblMain.textContent = cfg.main;
+  lblSub.textContent  = text || cfg.sub;
+
+  // Animate logo bars during recording
+  const activeColor = key === 'recording' ? '#4ade80'
+                    : key.startsWith('pol') || key === 'typing' ? '#9B7EC8'
+                    : 'rgba(232,228,220,.9)';
+  [lb1,lb2,lb3,lb4].forEach(b => b.style.background = activeColor);
+
+  // Hide all animated elements, then show what's needed
+  const all = {wave, timer, spinner, streamingDots, check, progress};
+  Object.values(all).forEach(el => el.style.display = 'none');
+  cfg.show.forEach(name => {
+    if (all[name]) all[name].style.display = 'flex';
+  });
+
+  // Timer — restart or stop
+  stopTimer();
+  if (key === 'recording') startTimer();
+
+  // Progress bar for streaming states
+  if (key === 'polishing' || key === 'processing') {
+    progress.style.display = 'block';
+  }
+
+  // Show pill
+  showPill();
+
+  // Shake on error
+  if (key === 'error' || key === 'no_speech') {
+    pill.classList.remove('shake');
+    void pill.offsetWidth;
+    pill.classList.add('shake');
+    setTimeout(() => pill.classList.remove('shake'), 400);
+  }
+
+  // Auto-hide
+  if (hideTimeout) clearTimeout(hideTimeout);
+  if (cfg.autohide) {
+    hideTimeout = setTimeout(hidePill, cfg.autohide);
+  }
+}
+
+/* ── Pill visibility ── */
+function showPill() {
+  if (hideTimeout) clearTimeout(hideTimeout);
+  pill.classList.remove('hiding');
+  pill.classList.add('visible');
+}
+
+function hidePill() {
+  pill.classList.add('hiding');
+  setTimeout(() => {
+    pill.classList.remove('visible', 'hiding');
+  }, 300);
+}
+
+/* ── Timer ── */
+function startTimer() {
+  timerSec = 0;
+  timer.style.display = 'block';
+  timer.textContent = '00:00';
+  timerInterval = setInterval(() => {
+    timerSec++;
+    const m = String(Math.floor(timerSec / 60)).padStart(2, '0');
+    const s = String(timerSec % 60).padStart(2, '0');
+    timer.textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+/* ── Position: bottom-right, above taskbar ── */
+function position() {
+  const pad = 20;
+  document.documentElement.style.setProperty('--right', pad + 'px');
+  document.documentElement.style.setProperty('--bottom', pad + 'px');
+}
+position();
+
+/* ── WebSocket connection (with auto-reconnect) ── */
+function connect() {
+  let ws;
+  try {
+    ws = new WebSocket('ws://127.0.0.1:8765');
+  } catch(e) {
+    scheduleReconnect(); return;
+  }
+
+  ws.onopen = () => {
+    console.log('Connected to Flow service');
+    if (wsRetry) { clearTimeout(wsRetry); wsRetry = null; }
+    applyState('idle');
+  };
+
+  ws.onmessage = (e) => {
+    try {
+      const { state, text } = JSON.parse(e.data);
+      applyState(state, text);
+    } catch(err) {
+      console.warn('Bad message:', e.data);
+    }
+  };
+
+  ws.onerror  = ()  => {};
+  ws.onclose  = ()  => { scheduleReconnect(); };
+}
+
+function scheduleReconnect() {
+  if (wsRetry) return;
+  wsRetry = setTimeout(() => { wsRetry = null; connect(); }, 2000);
+}
+
+/* ── Start ── */
+connect();
+
+/* Show a friendly waiting state until the service connects */
+applyState('idle', 'Connecting to Flow service…');
+showPill();
+</script>
+</body>
+</html>

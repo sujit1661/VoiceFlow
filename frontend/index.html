@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flow — Don't type, just speak.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600;1,9..144,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   FLOW — DESIGN SYSTEM
+   Built by Sujit Sadalage
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cream:#F3EFE6;
+  --cream-dark:#EDE8DE;
+  --cream-deep:#E4DECE;
+  --ink:#1C1917;
+  --ink-muted:#6B6560;
+  --ink-light:#9C9590;
+  --purple:#7B5EA7;
+  --purple-mid:#9B7EC8;
+  --purple-pale:rgba(123,94,167,.08);
+  --green:#16a34a;
+  --green-pale:rgba(22,163,74,.1);
+  --orange:#E87D2E;
+  --teal:#4DB892;
+  --border:#DDD8CF;
+  --border-light:#EAE5DC;
+  --white:#FFFFFF;
+  --r:999px;
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:var(--cream);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ── SCROLL REVEAL ── */
+.rv  {opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvl {opacity:0;transform:translateX(-44px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvr {opacity:0;transform:translateX(44px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvs {opacity:0;transform:scale(.93);transition:opacity .75s var(--ease-out),transform .75s var(--ease-out);}
+.rv.on,.rvl.on,.rvr.on,.rvs.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s!important;} .d2{transition-delay:.16s!important;}
+.d3{transition-delay:.24s!important;} .d4{transition-delay:.32s!important;}
+.d5{transition-delay:.4s!important;}  .d6{transition-delay:.48s!important;}
+
+/* ── TYPE ── */
+.serif{font-family:'Cormorant Garamond',Georgia,serif;}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+.h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;line-height:1.05;color:var(--ink);}
+.h2 em{font-style:italic;color:var(--purple);}
+.lead{font-size:1rem;color:var(--ink-muted);line-height:1.72;max-width:520px;}
+.tc{text-align:center;} .ma{margin:0 auto;}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 26px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;border:none;transition:all .22s ease;white-space:nowrap;}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 4px 18px rgba(123,94,167,.28);}
+.btn-purple:hover{background:#6B4E97;transform:translateY(-2px);box-shadow:0 8px 28px rgba(123,94,167,.38);}
+.btn-purple:active{transform:scale(.97);}
+.btn-dark{background:var(--ink);color:#fff;}
+.btn-dark:hover{background:#333;transform:translateY(-2px);}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+.btn-outline:hover{background:var(--ink);color:#fff;}
+.btn-outline-w{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);}
+.btn-outline-w:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6);}
+.btn-lg{height:56px;padding:0 36px;font-size:1rem;}
+.btn-sm{height:40px;padding:0 18px;font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<style>
+.navbar{position:sticky;top:14px;z-index:200;padding:0 20px;display:flex;justify-content:center;pointer-events:none;}
+.nav-pill{max-width:940px;width:100%;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 4px 24px rgba(28,25,23,.08);display:flex;align-items:center;justify-content:space-between;padding:8px 8px 8px 18px;pointer-events:all;transition:box-shadow .3s;}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
+.nav-bars{display:flex;align-items:flex-end;gap:3px;height:18px;}
+.nav-bar-item{background:var(--ink);border-radius:3px;width:5px;transition:height .4s ease;}
+.nav-logo-name{font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.nav-center{display:flex;align-items:center;gap:2px;}
+.nav-a{font-size:.82rem;font-weight:500;color:var(--ink-muted);text-decoration:none;padding:7px 13px;border-radius:var(--r);transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:3px;}
+.nav-a:hover{color:var(--ink);background:var(--cream);}
+.nav-a .arr{font-size:.6rem;opacity:.4;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-try{font-size:.82rem;font-weight:500;color:var(--ink-muted);text-decoration:none;padding:7px 14px;border-radius:var(--r);transition:all .2s;}
+.nav-try:hover{color:var(--ink);background:var(--cream);}
+@media(max-width:860px){.nav-center{display:none;}}
+/* Mobile hamburger */
+.nav-ham{display:none;width:36px;height:36px;border-radius:50%;background:var(--cream-dark);border:none;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;margin-right:4px;}
+.nav-ham span{display:block;width:16px;height:1.5px;background:var(--ink);border-radius:1px;}
+@media(max-width:860px){.nav-ham{display:flex;}}
+/* Mobile drawer */
+.mob-drawer{display:none;position:fixed;inset:0;background:rgba(28,25,23,.5);z-index:300;backdrop-filter:blur(4px);}
+.mob-drawer.open{display:block;}
+.mob-panel{position:absolute;top:0;right:0;bottom:0;width:min(320px,90vw);background:var(--cream);padding:24px;overflow-y:auto;animation:slideIn .3s var(--ease-out);}
+@keyframes slideIn{from{transform:translateX(100%);}to{transform:translateX(0);}}
+.mob-close{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;background:var(--cream-dark);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--ink-muted);}
+.mob-logo{display:flex;align-items:center;gap:8px;margin-bottom:32px;}
+.mob-nav-a{display:block;font-size:1rem;font-weight:600;color:var(--ink);text-decoration:none;padding:13px 0;border-bottom:1px solid var(--border-light);}
+.mob-nav-a:last-of-type{border-bottom:none;}
+</style>
+<nav class="navbar" id="navbar">
+  <div class="nav-pill" id="navPill">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-bars">
+        <div class="nav-bar-item" style="height:10px;"></div>
+        <div class="nav-bar-item" style="height:16px;"></div>
+        <div class="nav-bar-item" style="height:8px;"></div>
+        <div class="nav-bar-item" style="height:13px;"></div>
+      </div>
+      <span class="nav-logo-name">Flow</span>
+    </a>
+    <div class="nav-center">
+      <a href="features.html" class="nav-a">Product <span class="arr">▾</span></a>
+      <a href="use-cases.html" class="nav-a">Use Cases <span class="arr">▾</span></a>
+      <a href="app.html" class="nav-a">App</a>
+      <a href="about.html" class="nav-a">About</a>
+      <a href="contact.html" class="nav-a">Contact</a>
+    </div>
+    <div class="nav-right">
+      <button class="nav-ham" id="navHam" onclick="openMobNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="app.html" class="nav-try">Try Flow</a>
+      <a href="app.html" class="btn btn-purple btn-sm">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        Download for Windows
+      </a>
+    </div>
+  </div>
+</nav>
+<!-- Mobile drawer -->
+<div class="mob-drawer" id="mobDrawer" onclick="closeMobNav(event)">
+  <div class="mob-panel" id="mobPanel">
+    <button class="mob-close" onclick="closeMobNav()">✕</button>
+    <div class="mob-logo">
+      <div class="nav-bars"><div class="nav-bar-item" style="height:10px;"></div><div class="nav-bar-item" style="height:16px;"></div><div class="nav-bar-item" style="height:8px;"></div><div class="nav-bar-item" style="height:13px;"></div></div>
+      <span class="nav-logo-name">Flow</span>
+    </div>
+    <a href="features.html" class="mob-nav-a">Product</a>
+    <a href="use-cases.html" class="mob-nav-a">Use Cases</a>
+    <a href="app.html" class="mob-nav-a">App</a>
+    <a href="about.html" class="mob-nav-a">About</a>
+    <a href="contact.html" class="mob-nav-a">Contact</a>
+    <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;">
+      <a href="app.html" class="btn btn-outline" style="justify-content:center;">Try Flow</a>
+      <a href="app.html" class="btn btn-purple" style="justify-content:center;">Download for Windows</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<style>
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 0;position:relative;overflow:hidden;background:var(--cream);}
+.hero-glow{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(123,94,167,.09) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.hero-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;max-width:680px;}
+/* Arc text */
+.arc-wrap{position:absolute;top:50%;z-index:1;}
+.arc-wrap.al{left:-30px;transform:translateY(-50%);animation:arcSpin 24s linear infinite;}
+.arc-wrap.ar{right:-30px;transform:translateY(-50%);animation:arcSpin 30s linear infinite reverse;opacity:.4;}
+@keyframes arcSpin{from{transform:translateY(-50%) rotate(0deg);}to{transform:translateY(-50%) rotate(360deg);}}
+@media(max-width:768px){.arc-wrap{display:none;}}
+/* Big headline */
+.hero-h1{font-family:'Cormorant Garamond',Georgia,serif;line-height:.96;margin-bottom:22px;}
+.hero-h1-l1{display:block;font-size:clamp(3.8rem,9vw,7rem);font-weight:300;font-style:italic;color:var(--ink-muted);letter-spacing:-.02em;}
+.hero-h1-l2{display:block;font-size:clamp(3.8rem,9vw,7rem);font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.hero-sub{font-size:1.05rem;color:var(--ink-muted);max-width:440px;margin:0 auto 36px;line-height:1.68;}
+.hero-btns{display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
+.hero-note{font-size:.75rem;color:var(--ink-light);margin-bottom:32px;letter-spacing:.01em;}
+/* Green tag */
+.g-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 16px;border-radius:var(--r);background:var(--green-pale);border:1px solid rgba(22,163,74,.2);color:var(--green);font-size:.82rem;font-weight:600;margin-bottom:20px;}
+/* Waveform pill */
+.wave-pill{display:inline-flex;align-items:center;gap:3px;background:var(--ink);border-radius:var(--r);padding:10px 24px;margin-bottom:36px;}
+.wb{width:3px;background:#fff;border-radius:2px;animation:wv 1.3s ease-in-out infinite;}
+.wb:nth-child(1){height:5px;animation-delay:0s;} .wb:nth-child(2){height:11px;animation-delay:.07s;}
+.wb:nth-child(3){height:20px;animation-delay:.14s;} .wb:nth-child(4){height:28px;animation-delay:.21s;}
+.wb:nth-child(5){height:16px;animation-delay:.28s;} .wb:nth-child(6){height:32px;animation-delay:.35s;}
+.wb:nth-child(7){height:22px;animation-delay:.42s;} .wb:nth-child(8){height:30px;animation-delay:.35s;}
+.wb:nth-child(9){height:18px;animation-delay:.28s;} .wb:nth-child(10){height:26px;animation-delay:.21s;}
+.wb:nth-child(11){height:12px;animation-delay:.14s;} .wb:nth-child(12){height:7px;animation-delay:.07s;}
+@keyframes wv{0%,100%{transform:scaleY(.3);opacity:.35;}50%{transform:scaleY(1);opacity:1;}}
+/* ── HERO APP WINDOW (the main visual) ── */
+.hero-window-wrap{position:relative;z-index:2;width:100%;max-width:760px;padding:0 24px;margin-bottom:0;}
+.hero-window{background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(28,25,23,.14),0 4px 16px rgba(28,25,23,.06);animation:heroFloat 6s ease-in-out infinite;}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-.3deg);}50%{transform:translateY(-10px) rotate(.3deg);}}
+.hw-bar{display:flex;align-items:center;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);background:#f9f7f4;}
+.hw-dot{width:11px;height:11px;border-radius:50%;}
+.hw-dot.r{background:#ff5f57;} .hw-dot.y{background:#febc2e;} .hw-dot.g{background:#28c840;}
+.hw-app-name{margin-left:8px;font-size:.75rem;color:var(--ink-light);font-weight:500;}
+.hw-rec-pill{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r);background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);font-size:.72rem;font-weight:600;color:var(--green);}
+.hw-rec-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink .9s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.hw-body{padding:24px 28px;}
+.hw-section-lbl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:8px;}
+.hw-raw-text{font-size:.875rem;color:var(--ink-muted);font-style:italic;line-height:1.65;padding:12px 14px;background:var(--cream-dark);border-radius:10px;margin-bottom:16px;}
+.hw-raw-text s{color:rgba(220,60,60,.75);text-decoration-thickness:2px;}
+.hw-divider{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.hw-divider-line{flex:1;height:1px;background:var(--border);}
+.hw-divider-badge{display:flex;align-items:center;gap:5px;padding:3px 10px;border-radius:var(--r);background:var(--purple-pale);border:1px solid rgba(123,94,167,.2);font-size:.68rem;font-weight:700;color:var(--purple);white-space:nowrap;}
+.hw-clean-text{font-size:.925rem;color:var(--ink);line-height:1.7;padding:14px 16px;background:rgba(123,94,167,.05);border:1px solid rgba(123,94,167,.15);border-radius:10px;}
+/* Typewriter cursor on clean text */
+.hw-cursor{display:inline-block;width:2px;height:1em;background:var(--purple);vertical-align:text-bottom;margin-left:2px;animation:blink .9s step-end infinite;}
+/* Ticker band */
+.ticker{width:100%;overflow:hidden;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;z-index:2;}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;bottom:0;width:140px;z-index:3;pointer-events:none;}
+.ticker::before{left:0;background:linear-gradient(to right,var(--cream),transparent);}
+.ticker::after{right:0;background:linear-gradient(to left,var(--cream),transparent);}
+.ticker-inner{display:flex;gap:52px;width:max-content;animation:tkr 24s linear infinite;}
+.ticker-inner span{white-space:nowrap;font-size:.95rem;font-weight:500;color:var(--ink-muted);}
+.ticker-sep{color:var(--ink-light);font-weight:300;}
+@keyframes tkr{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+</style>
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="arc-wrap al" aria-hidden="true">
+    <svg viewBox="0 0 300 300" width="310" height="310">
+      <defs><path id="cp1" d="M150,150 m-115,0 a115,115 0 1,1 230,0 a115,115 0 1,1-230,0"/></defs>
+      <text font-size="10" fill="#9C9590" font-family="Inter,sans-serif" letter-spacing="1.8">
+        <textPath href="#cp1">...and see if the notes from yesterday's meeting were sent out, or if they're still waiting. I think she mentioned it but didn't confirm ✦ ...notes still pending? ✦ </textPath>
+      </text>
+    </svg>
+  </div>
+  <div class="arc-wrap ar" aria-hidden="true">
+    <svg viewBox="0 0 260 260" width="260" height="260">
+      <defs><path id="cp2" d="M130,130 m-95,0 a95,95 0 1,1 190,0 a95,95 0 1,1-190,0"/></defs>
+      <text font-size="9" fill="#9C9590" font-family="Inter,sans-serif" letter-spacing="1.4">
+        <textPath href="#cp2">...the whole thing has been a bit chaotic lately, like nobody really knows. ✦ ...things have been chaotic. ✦ </textPath>
+      </text>
+    </svg>
+  </div>
+  <div class="hero-center">
+    <h1 class="hero-h1">
+      <span class="hero-h1-l1">Don't type,</span>
+      <span class="hero-h1-l2">just speak</span>
+    </h1>
+    <p class="hero-sub">The voice-to-text AI that turns speech into clear, polished writing — in every app, instantly.</p>
+    <div class="hero-btns">
+      <a href="app.html" class="btn btn-purple btn-lg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        Download for Windows
+      </a>
+      <a href="app.html" class="btn btn-outline btn-lg">Try in Browser</a>
+    </div>
+    <p class="hero-note">Available on Mac · Windows · iPhone · Android</p>
+    <div class="g-pill">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Removed repetition
+    </div>
+    <div class="wave-pill" aria-label="Voice waveform">
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+    </div>
+  </div>
+
+  <!-- ── FLOATING APP WINDOW MOCKUP ── -->
+  <div class="hero-window-wrap">
+    <div class="hero-window">
+      <div class="hw-bar">
+        <div class="hw-dot r"></div><div class="hw-dot y"></div><div class="hw-dot g"></div>
+        <span class="hw-app-name">Gmail — Compose · Flow Active</span>
+        <div class="hw-rec-pill"><div class="hw-rec-dot"></div>Recording</div>
+      </div>
+      <div class="hw-body">
+        <div class="hw-section-lbl">What you said</div>
+        <div class="hw-raw-text">
+          <s>um yeah</s> so I think we should probably reach out to <s>uh</s> Jenny from legal,
+          I think she said something about the, the NDA being like <s>you know</s> not finalized yet
+          and we should <s>like</s> follow up on that before the deadline
+        </div>
+        <div class="hw-divider">
+          <div class="hw-divider-line"></div>
+          <div class="hw-divider-badge">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            Removed filler · AI Polished
+          </div>
+          <div class="hw-divider-line"></div>
+        </div>
+        <div class="hw-section-lbl" style="color:var(--purple);">✦ Flow writes</div>
+        <div class="hw-clean-text">
+          Let's reach out to Jenny from Legal — she mentioned the NDA isn't finalized yet.
+          We should follow up before the deadline.<span class="hw-cursor"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Ticker: raw speech scrolling by -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>...honestly the whole thing has been a bit chaotic, like nobody really knows what's going on</span>
+      <span class="ticker-sep">✦</span>
+      <span>I was thinking we should reschedule because I don't think everyone's available Thursday</span>
+      <span class="ticker-sep">✦</span>
+      <span>...and see if the notes from yesterday were sent out or if they're still waiting</span>
+      <span class="ticker-sep">✦</span>
+      <span>um so yeah I finished the review yesterday but uh I got pulled into this other thing</span>
+      <span class="ticker-sep">✦</span>
+      <span>...honestly the whole thing has been a bit chaotic, like nobody really knows what's going on</span>
+      <span class="ticker-sep">✦</span>
+      <span>I was thinking we should reschedule because I don't think everyone's available Thursday</span>
+      <span class="ticker-sep">✦</span>
+      <span>...and see if the notes from yesterday were sent out or if they're still waiting</span>
+      <span class="ticker-sep">✦</span>
+      <span>um so yeah I finished the review yesterday but uh I got pulled into this other thing</span>
+      <span class="ticker-sep">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═══ -->
+<style>
+.stats-bar{background:var(--ink);padding:52px 24px;}
+.stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);}
+@media(max-width:640px){.stats-inner{grid-template-columns:repeat(2,1fr);}}
+.stat-item{background:var(--ink);padding:36px 28px;text-align:center;}
+.stat-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:3.2rem;font-weight:700;color:#fff;line-height:1;letter-spacing:-.03em;}
+.stat-num span{font-style:italic;color:var(--purple-mid);}
+.stat-lbl{font-size:.78rem;color:rgba(255,255,255,.38);margin-top:8px;line-height:1.5;letter-spacing:.02em;}
+</style>
+<section class="stats-bar" id="stats">
+  <div class="stats-inner">
+    <div class="stat-item rv">
+      <div class="stat-num" id="sn1">0<span>×</span></div>
+      <div class="stat-lbl">Faster than average<br/>typing speed</div>
+    </div>
+    <div class="stat-item rv d2">
+      <div class="stat-num" id="sn2">0<span>+</span></div>
+      <div class="stat-lbl">Languages automatically<br/>detected</div>
+    </div>
+    <div class="stat-item rv d3">
+      <div class="stat-num" id="sn3">0<span>s</span></div>
+      <div class="stat-lbl">Average processing<br/>latency</div>
+    </div>
+    <div class="stat-item rv d4">
+      <div class="stat-num" id="sn4">0<span>%</span></div>
+      <div class="stat-lbl">Filler words removed<br/>automatically</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<style>
+.how-section{padding:120px 24px;background:var(--cream);}
+.how-inner{max-width:1080px;margin:0 auto;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;}
+@media(max-width:768px){.how-grid{grid-template-columns:1fr;gap:16px;}}
+.how-card{background:var(--white);border:1px solid var(--border);border-radius:24px;padding:36px 32px;position:relative;overflow:hidden;transition:transform .35s var(--ease-out),box-shadow .35s ease;}
+.how-card:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(28,25,23,.1);}
+.how-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--purple),var(--purple-mid));opacity:0;transition:opacity .3s;}
+.how-card:hover::before{opacity:1;}
+.how-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:4rem;font-weight:800;color:var(--cream-deep);line-height:1;margin-bottom:20px;letter-spacing:-.04em;}
+.how-icon{width:52px;height:52px;border-radius:14px;background:var(--cream-dark);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:all .3s;}
+.how-card:hover .how-icon{background:var(--purple);border-color:var(--purple);}
+.how-card:hover .how-icon svg{stroke:#fff;}
+.how-icon svg{stroke:var(--ink-muted);transition:stroke .3s;}
+.how-title{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.how-desc{font-size:.875rem;color:var(--ink-muted);line-height:1.7;}
+/* Connector line between cards */
+.how-connector{display:none;}
+@media(min-width:769px){
+  .how-grid{position:relative;}
+  .how-connector{display:block;position:absolute;top:68px;left:33.33%;width:33.33%;height:1px;background:linear-gradient(to right,var(--border),var(--border));pointer-events:none;}
+  .how-connector.c2{left:66.66%;}
+}
+</style>
+<section class="how-section" id="how-it-works">
+  <div class="how-inner">
+    <div class="rv tc">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h2 ma" style="text-align:center;">Three steps to pure <em>flow state</em></h2>
+      <p class="lead ma tc" style="margin-top:14px;">Hold a key, speak naturally, release. Flow handles everything else — transcription, polishing, and typing.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-connector"></div>
+      <div class="how-connector c2"></div>
+      <div class="how-card rv d1">
+        <div class="how-num">01</div>
+        <div class="how-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <div class="how-title">Hold &amp; Speak</div>
+        <div class="how-desc">Press the hotkey in any app — Gmail, Slack, VS Code, anything. Start speaking naturally. No window switching, no mode changes.</div>
+      </div>
+      <div class="how-card rv d2">
+        <div class="how-num">02</div>
+        <div class="how-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="how-title">AI Polishes Instantly</div>
+        <div class="how-desc">Flow strips filler words, fixes grammar, and formats your text for the context — email, code comment, Slack message — all in under a second.</div>
+      </div>
+      <div class="how-card rv d3">
+        <div class="how-num">03</div>
+        <div class="how-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="how-title">It Just Appears</div>
+        <div class="how-desc">Release the key. Polished text is typed exactly where your cursor was. No copy-paste, no interruption. Pure unbroken flow.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPEED COMPARISON ═══ -->
+<style>
+.speed-section{padding:0 24px 100px;}
+.speed-inner{max-width:1080px;margin:0 auto;}
+.speed-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:56px;}
+@media(max-width:640px){.speed-cards{grid-template-columns:1fr;}}
+.sc{border-radius:24px;padding:40px;}
+.sc.kb{background:var(--white);border:1px solid var(--border);}
+.sc.vf{background:var(--ink);}
+.sc-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:10px;}
+.sc.vf .sc-label{color:rgba(255,255,255,.35);}
+.sc-num{font-family:'Cormorant Garamond',Georgia,serif;font-size:3.8rem;font-weight:700;color:var(--ink-muted);letter-spacing:-.04em;line-height:1;margin-bottom:22px;}
+.sc.vf .sc-num{color:#fff;}
+.sc-bar{height:3px;background:var(--cream-deep);border-radius:99px;margin-bottom:24px;overflow:hidden;}
+.sc.vf .sc-bar{background:rgba(255,255,255,.1);}
+.sc-fill{height:100%;border-radius:99px;background:var(--ink-light);width:0;transition:width 2.2s cubic-bezier(.25,.46,.45,.94);}
+.sc.vf .sc-fill{background:var(--purple-mid);}
+.sc-text{font-size:.85rem;line-height:1.8;color:var(--ink-muted);}
+.sc.vf .sc-text{color:rgba(255,255,255,.55);}
+.sc-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r);background:var(--purple-pale);border:1px solid rgba(123,94,167,.18);font-size:.72rem;font-weight:700;color:var(--purple);margin-bottom:14px;}
+.sc.vf .sc-badge{background:rgba(155,126,200,.15);border-color:rgba(155,126,200,.25);color:var(--purple-mid);}
+</style>
+<section class="speed-section" id="speed">
+  <div class="speed-inner">
+    <div class="rv tc">
+      <p class="eyebrow">Performance</p>
+      <h2 class="h2 ma tc"><em>4×</em> faster than typing</h2>
+      <p class="lead ma tc" style="margin-top:14px;">Voice that actually works is here. Speak at 220 wpm — nearly 5× the average typing speed.</p>
+    </div>
+    <div class="speed-cards">
+      <div class="sc kb rv d1">
+        <div class="sc-badge">⌨&nbsp; Keyboard</div>
+        <div class="sc-num" id="kbWpm">0 wpm</div>
+        <div class="sc-bar"><div class="sc-fill" id="kbFill" data-w="18"></div></div>
+        <p class="sc-text">I'm getting started with the project. How would you like to set up the file structure? Here are a few options we could consider. The first approach would be to organize by milestone, while the second...</p>
+      </div>
+      <div class="sc vf rv d2">
+        <div class="sc-badge">⚡&nbsp; Flow</div>
+        <div class="sc-num" id="vfWpm">0 wpm</div>
+        <div class="sc-bar"><div class="sc-fill" id="vfFill" data-w="100"></div></div>
+        <p class="sc-text">I'm getting started with the project. How would you like to set up the file structure? Here are a few options. The first organizes by milestone, the second by feature area, the third by team ownership, and the fourth by sprint cycle — each has distinct tradeoffs worth considering before we commit to a direction. I'm getting started with the project again...</p>
+      </div>
+    </div>
+    <div class="rv" style="margin-top:40px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="app.html" class="btn btn-outline">Try Flow Free</a>
+      <a href="app.html" class="btn btn-purple">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        Download for Windows
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MADE FOR THE WAY YOU WORK ═══ -->
+<style>
+.work-section{padding:0 24px;margin-bottom:100px;}
+.work-dark{max-width:1080px;margin:0 auto;background:var(--ink);border-radius:32px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:580px;}
+@media(max-width:900px){.work-dark{grid-template-columns:1fr;}}
+.work-left{padding:60px 52px;display:flex;flex-direction:column;justify-content:center;}
+.work-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:10px;}
+.work-h2 em{font-style:italic;color:#B89FD8;}
+.work-sub{font-size:.875rem;color:rgba(255,255,255,.38);margin-bottom:26px;}
+.work-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px;}
+.wchip{padding:6px 15px;border-radius:var(--r);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.58);font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s;background:transparent;font-family:'Inter',sans-serif;}
+.wchip:hover,.wchip.on{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.32);color:#fff;}
+.work-demo{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.wdemo{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:18px;}
+.wdemo-tag{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:8px;}
+.wdemo-txt{font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.65;transition:opacity .25s ease;}
+/* Right: SVG illustration panel */
+.work-right{position:relative;background:linear-gradient(155deg,#261b3f 0%,#1C1917 55%);display:flex;align-items:center;justify-content:center;padding:40px;overflow:hidden;}
+.work-right-label{position:absolute;top:32px;left:36px;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.7rem;font-weight:700;color:rgba(255,255,255,.12);line-height:1.1;pointer-events:none;}
+/* Laptop illustration SVG wrapper */
+.lp-illo{position:relative;z-index:2;}
+/* Speech bubbles animate */
+.bub-w{animation:bubFloat 4s ease-in-out infinite;}
+.bub-o{animation:bubFloat 4s ease-in-out .7s infinite;}
+.bub-q{animation:bubFloat 5s ease-in-out 1.4s infinite;}
+@keyframes bubFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+</style>
+<section class="work-section" id="use-cases">
+  <div class="work-dark rvs">
+    <div class="work-left">
+      <h2 class="work-h2">Made for the way <em>you</em> work</h2>
+      <p class="work-sub">Select one to see Flow in action.</p>
+      <div class="work-chips" id="workChips">
+        <button class="wchip on" data-use="accessibility">Accessibility</button>
+        <button class="wchip" data-use="creators">Creators</button>
+        <button class="wchip" data-use="support">Customer Support</button>
+        <button class="wchip" data-use="developers">Developers</button>
+        <button class="wchip" data-use="lawyers">Lawyers</button>
+        <button class="wchip" data-use="leaders">Leaders</button>
+        <button class="wchip" data-use="sales">Sales</button>
+        <button class="wchip" data-use="students">Students</button>
+        <button class="wchip" data-use="teams">Teams</button>
+      </div>
+      <div class="work-demo">
+        <div class="wdemo">
+          <div class="wdemo-tag">What you said</div>
+          <div class="wdemo-txt" id="workSay">"um, I just need to, uh, reply to that email about the accessibility audit for the team"</div>
+        </div>
+        <div class="wdemo">
+          <div class="wdemo-tag">✦ Flow writes</div>
+          <div class="wdemo-txt" id="workWrite">"I need to reply to the email about the accessibility audit for the team."</div>
+        </div>
+      </div>
+    </div>
+    <div class="work-right">
+      <div class="work-right-label">One tool.<br/>Your workflow.</div>
+      <!-- Exact laptop + speech bubbles SVG illustration matching WisperFlow screenshot -->
+      <div class="lp-illo">
+        <svg width="340" height="320" viewBox="0 0 340 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Purple lavender blob behind laptop -->
+          <ellipse cx="195" cy="195" rx="110" ry="80" fill="#C4B5FD" opacity=".35" transform="rotate(-15 195 195)"/>
+          <ellipse cx="200" cy="200" rx="95" ry="65" fill="#A78BFA" opacity=".25" transform="rotate(-15 200 200)"/>
+          <!-- Dark hand/wrist holding laptop from below -->
+          <ellipse cx="190" cy="278" rx="70" ry="28" fill="#1a1a1a" opacity=".8"/>
+          <path d="M140 265 Q160 285 190 288 Q220 285 240 265" stroke="#2a2a2a" stroke-width="2" fill="none"/>
+          <!-- Laptop body/base -->
+          <rect x="100" y="220" width="200" height="12" rx="6" fill="#222"/>
+          <rect x="108" y="215" width="184" height="10" rx="5" fill="#2a2a2a"/>
+          <!-- Keyboard grid on base -->
+          <rect x="118" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="130" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="142" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="154" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="166" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="178" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="190" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="202" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <rect x="214" y="218" width="8" height="5" rx="1.5" fill="#333" opacity=".7"/>
+          <!-- Laptop screen -->
+          <rect x="110" y="100" width="180" height="118" rx="8" fill="#111" stroke="#333" stroke-width="2"/>
+          <rect x="116" y="106" width="168" height="106" rx="6" fill="#0a0a0a"/>
+          <!-- Screen content lines -->
+          <rect x="126" y="116" width="100" height="6" rx="3" fill="#333" opacity=".8"/>
+          <rect x="126" y="128" width="70" height="4" rx="2" fill="#222" opacity=".7"/>
+          <rect x="126" y="138" width="120" height="4" rx="2" fill="#222" opacity=".6"/>
+          <rect x="126" y="148" width="90" height="4" rx="2" fill="#222" opacity=".5"/>
+          <rect x="126" y="158" width="110" height="4" rx="2" fill="#222" opacity=".6"/>
+          <rect x="126" y="168" width="60" height="4" rx="2" fill="#222" opacity=".4"/>
+          <rect x="126" y="178" width="130" height="4" rx="2" fill="#222" opacity=".5"/>
+          <rect x="126" y="188" width="80" height="4" rx="2" fill="#222" opacity=".4"/>
+          <!-- Screen glow -->
+          <rect x="116" y="106" width="168" height="106" rx="6" fill="url(#screenGlow)" opacity=".15"/>
+          <defs>
+            <linearGradient id="screenGlow" x1="116" y1="106" x2="284" y2="212" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7B5EA7" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#C4B5FD" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Screen hinge -->
+          <rect x="115" y="215" width="170" height="5" rx="2.5" fill="#1a1a1a"/>
+
+          <!-- WHITE speech bubble (Flow logo) — top left, floating -->
+          <g class="bub-w" style="transform-origin:80px 70px;">
+            <rect x="30" y="52" width="110" height="42" rx="12" fill="white" filter="drop-shadow(0 4px 12px rgba(0,0,0,.3))"/>
+            <!-- Bubble tail -->
+            <path d="M55 94 L48 108 L68 94" fill="white"/>
+            <!-- Flow bar chart icon inside bubble -->
+            <rect x="44" y="64" width="6" height="14" rx="2" fill="#1C1917"/>
+            <rect x="53" y="60" width="6" height="18" rx="2" fill="#1C1917"/>
+            <rect x="62" y="68" width="6" height="10" rx="2" fill="#1C1917"/>
+            <text x="74" y="76" font-size="11" font-weight="700" fill="#1C1917" font-family="Inter,sans-serif">Flow</text>
+          </g>
+
+          <!-- ORANGE speech bubble (squiggly voice) — top right -->
+          <g class="bub-o" style="transform-origin:268px 58px;">
+            <rect x="228" y="36" width="82" height="44" rx="12" fill="#E87D2E" filter="drop-shadow(0 4px 14px rgba(232,125,46,.5))"/>
+            <!-- Bubble tail right side -->
+            <path d="M290 80 L300 95 L278 80" fill="#E87D2E"/>
+            <!-- Squiggly lines representing voice -->
+            <path d="M240 52 Q244 48 248 52 Q252 56 256 52" stroke="rgba(255,255,255,.9)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M240 62 Q246 57 252 62 Q258 67 264 62 Q270 57 276 62 Q282 67 288 62 Q294 57 298 62" stroke="rgba(255,255,255,.75)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M248 72 Q254 68 260 72 Q266 76 272 72 Q278 68 284 72" stroke="rgba(255,255,255,.6)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- YELLOW/TAN question mark bubble — small, middle right -->
+          <g class="bub-q" style="transform-origin:300px 158px;">
+            <circle cx="300" cy="158" r="22" fill="#F5E6C8" filter="drop-shadow(0 3px 8px rgba(0,0,0,.2))"/>
+            <text x="295" y="164" font-size="18" font-weight="800" fill="#1C1917" font-family="Inter,sans-serif">?</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AI AUTO EDITS ═══ -->
+<!-- ─── NEW: WRITE FASTER DARK SECTION (with browser mockup illustration) ─── -->
+<style>
+.wf-section{padding:0 24px;margin:0 0 0;}
+.wf-dark{max-width:1080px;margin:0 auto 100px;background:var(--ink);border-radius:32px;overflow:hidden;}
+.wf-top{padding:72px 60px 56px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+@media(max-width:900px){.wf-top{grid-template-columns:1fr;gap:36px;padding:48px 32px 36px;}}
+.wf-heading{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.0;margin-bottom:14px;}
+.wf-heading em{font-style:italic;color:#B89FD8;}
+.wf-sub{font-size:.95rem;color:rgba(255,255,255,.42);line-height:1.72;margin-bottom:28px;}
+.wf-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.wf-btn-w{display:inline-flex;align-items:center;gap:7px;height:48px;padding:0 24px;border-radius:var(--r);background:#fff;color:var(--ink);font-size:.875rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;}
+.wf-btn-w:hover{background:#f0ece6;transform:translateY(-1px);}
+.wf-btn-o{display:inline-flex;align-items:center;gap:7px;height:48px;padding:0 24px;border-radius:var(--r);background:transparent;color:rgba(255,255,255,.7);font-size:.875rem;font-weight:600;border:1.5px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;transition:all .2s;font-family:'Inter',sans-serif;}
+.wf-btn-o:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.4);}
+/* Right: speed comparison visual */
+.wf-compare{display:flex;flex-direction:column;gap:12px;}
+.wf-row{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:18px 20px;position:relative;overflow:hidden;}
+.wf-row.flow-row{border-color:rgba(123,94,167,.3);background:rgba(123,94,167,.1);}
+.wf-row-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px;}
+.wf-row.flow-row .wf-row-label{color:var(--purple-mid);}
+.wf-row-wpm{font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:700;color:rgba(255,255,255,.5);line-height:1;}
+.wf-row.flow-row .wf-row-wpm{color:#fff;}
+.wf-row-bar{height:3px;background:rgba(255,255,255,.08);border-radius:99px;margin-top:10px;overflow:hidden;}
+.wf-row-fill{height:100%;border-radius:99px;background:rgba(255,255,255,.2);transition:width 2s ease;}
+.wf-row.flow-row .wf-row-fill{background:linear-gradient(to right,#7B5EA7,#B89FD8);}
+/* Bottom: platform screenshots row */
+.wf-bottom{border-top:1px solid rgba(255,255,255,.07);padding:28px 60px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media(max-width:860px){.wf-bottom{grid-template-columns:repeat(2,1fr);padding:28px 32px;}}
+.wf-platform{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:all .25s;}
+.wf-platform:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.15);}
+.wf-p-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;}
+.wf-p-name{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.7);}
+.wf-p-type{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);}
+</style>
+<section class="wf-section">
+  <div class="wf-dark rvs">
+    <div class="wf-top">
+      <div>
+        <p style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px;">Write faster</p>
+        <h2 class="wf-heading">Write faster in all your apps,<br/><em>on any device</em></h2>
+        <p class="wf-sub">Seamless speech-to-text in every application on your phone or computer. One hotkey, infinite reach.</p>
+        <div class="wf-btns">
+          <a href="app.html" class="wf-btn-w">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+            Download for Windows
+          </a>
+          <a href="app.html" class="wf-btn-o">Try in Browser</a>
+        </div>
+      </div>
+      <div class="wf-compare">
+        <div class="wf-row">
+          <div class="wf-row-label">⌨ Keyboard average</div>
+          <div class="wf-row-wpm" id="wfKb">45 wpm</div>
+          <div class="wf-row-bar"><div class="wf-row-fill" style="width:20%;"></div></div>
+        </div>
+        <div class="wf-row flow-row">
+          <div class="wf-row-label">⚡ Flow voice speed</div>
+          <div class="wf-row-wpm" id="wfVf">220 wpm</div>
+          <div class="wf-row-bar"><div class="wf-row-fill" style="width:100%;"></div></div>
+        </div>
+        <div style="padding:12px 16px;background:rgba(123,94,167,.08);border:1px solid rgba(123,94,167,.18);border-radius:12px;font-size:.82rem;color:var(--purple-mid);font-weight:600;">
+          ✦ Flow is 4.9× faster — speak at the speed of thought
+        </div>
+      </div>
+    </div>
+    <div class="wf-bottom">
+      <div class="wf-platform">
+        <div class="wf-p-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="wf-p-name">Mac</div><div class="wf-p-type">Desktop</div>
+      </div>
+      <div class="wf-platform">
+        <div class="wf-p-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="wf-p-name">Windows</div><div class="wf-p-type">Desktop</div>
+      </div>
+      <div class="wf-platform">
+        <div class="wf-p-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <div class="wf-p-name">iPhone</div><div class="wf-p-type">Mobile</div>
+      </div>
+      <div class="wf-platform">
+        <div class="wf-p-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <div class="wf-p-name">Android</div><div class="wf-p-type">Mobile</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AI AUTO EDITS ═══ -->
+<style>
+.ai-section{padding:100px 24px;border-top:1px solid var(--border);}
+.ai-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+@media(max-width:800px){.ai-inner{grid-template-columns:1fr;gap:48px;}}
+.ai-card{border-radius:22px;overflow:hidden;box-shadow:0 28px 72px rgba(28,25,23,.14);}
+.ai-photo{height:280px;background:linear-gradient(135deg,#8B2500 0%,#C1440E 35%,#2A5F8B 70%,#0F1F40 100%);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+/* Person silhouette via CSS */
+.silhouette{position:relative;width:120px;height:210px;margin-top:30px;}
+.sil-head{width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.45);margin:0 auto 4px;}
+.sil-body{width:84px;height:110px;background:rgba(0,0,0,.38);border-radius:42px 42px 16px 16px;margin:0 auto;position:relative;}
+.sil-body::before,.sil-body::after{content:'';position:absolute;top:14px;width:14px;height:62px;background:rgba(0,0,0,.3);border-radius:7px;}
+.sil-body::before{left:-12px;transform:rotate(-8deg);}
+.sil-body::after{right:-12px;transform:rotate(8deg);}
+.ai-removed-tag{position:absolute;top:18px;left:18px;background:var(--orange);color:#fff;font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:var(--r);transform:rotate(-3deg);box-shadow:0 4px 16px rgba(232,125,46,.4);}
+/* Strikethrough text */
+.ai-raw-fade{position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,rgba(0,0,0,.68));}
+.ai-raw-txt{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.6;}
+.ai-raw-txt s{color:rgba(255,100,100,.85);}
+.ai-polished-bar{background:var(--ink);padding:20px 24px;}
+.ai-polished-txt{font-size:.92rem;color:rgba(255,255,255,.82);font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;line-height:1.65;}
+/* Right text */
+.ai-eyebrow-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.ai-dash{color:var(--orange);font-size:1.3rem;letter-spacing:-2px;line-height:1;}
+.ai-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:18px;}
+.ai-h2 .orange{color:var(--orange);}
+.ai-lead{font-size:.95rem;color:var(--ink-muted);line-height:1.72;margin-bottom:28px;max-width:420px;}
+</style>
+<section class="ai-section" id="ai-edits">
+  <div class="ai-inner">
+    <div class="ai-card rvl">
+      <div class="ai-photo">
+        <div class="silhouette"><div class="sil-head"></div><div class="sil-body"></div></div>
+        <div class="ai-removed-tag">Removed filler</div>
+        <div class="ai-raw-fade">
+          <div class="ai-raw-txt"><s>uh yeah</s> so I think we should reach out to <s>uh</s> Jenny from legal, I think she said something about the NDA being like n</div>
+        </div>
+      </div>
+      <div class="ai-polished-bar">
+        <div class="ai-polished-txt">"Let's reach out to Jenny from Legal — she may have mentioned the NDA."</div>
+      </div>
+    </div>
+    <div class="rvr">
+      <div class="ai-eyebrow-wrap"><span class="ai-dash">·—·</span></div>
+      <h2 class="ai-h2"><span class="orange">AI</span> Auto Edits</h2>
+      <p class="ai-lead">Speak naturally and Flow transcribes and edits your voice, instantly. Rambled thoughts become clear, perfectly formatted text — without filler words or typos.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="app.html" class="btn btn-outline">Try Flow</a>
+        <a href="app.html" class="btn btn-purple">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+          Download for Windows
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURE CARDS TRIO ═══ -->
+<style>
+.feat-section{padding:0 24px 100px;}
+.feat-inner{max-width:1080px;margin:0 auto;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
+@media(max-width:768px){.feat-grid{grid-template-columns:1fr;}}
+.fc{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:32px;transition:transform .35s var(--ease-out),box-shadow .35s;}
+.fc:hover{transform:translateY(-5px);box-shadow:0 18px 52px rgba(28,25,23,.09);}
+.fc-icon{width:48px;height:48px;border-radius:14px;background:var(--cream-dark);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:all .3s;}
+.fc:hover .fc-icon{background:var(--purple);border-color:var(--purple);}
+.fc:hover .fc-icon svg{stroke:#fff;}
+.fc-icon svg{stroke:var(--ink-muted);transition:stroke .3s;}
+.fc-title{font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.fc-desc{font-size:.86rem;color:var(--ink-muted);line-height:1.7;}
+.fc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:16px;}
+.fc-tag{padding:3px 10px;border-radius:var(--r);background:var(--cream-dark);font-size:.72rem;color:var(--ink-muted);font-weight:500;}
+</style>
+<section class="feat-section">
+  <div class="feat-inner">
+    <div class="feat-grid">
+      <div class="fc rv d1">
+        <div class="fc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="fc-title">Personal Dictionary</div>
+        <div class="fc-desc">Flow automatically learns your unique words, names, and jargon — so it always gets your world right.</div>
+        <div class="fc-tags"><span class="fc-tag">Robyn</span><span class="fc-tag">Viktor</span><span class="fc-tag">SaaS</span><span class="fc-tag">Caltrain</span><span class="fc-tag">Nguyen</span></div>
+      </div>
+      <div class="fc rv d2">
+        <div class="fc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="fc-title">Snippet Library</div>
+        <div class="fc-desc">Create voice shortcuts for things you say repeatedly — scheduling links, FAQs, email signatures, and more.</div>
+        <div class="fc-tags"><span class="fc-tag">Calendar</span><span class="fc-tag">Support intro</span><span class="fc-tag">FAQ</span><span class="fc-tag">Address</span></div>
+      </div>
+      <div class="fc rv d3">
+        <div class="fc-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="fc-title">100+ Languages</div>
+        <div class="fc-desc">Flow detects and transcribes your language automatically — switch mid-sentence without missing a word.</div>
+        <div class="fc-tags"><span class="fc-tag">English</span><span class="fc-tag">Spanish</span><span class="fc-tag">Hindi</span><span class="fc-tag">French</span><span class="fc-tag">+96</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEVICES SECTION ═══ -->
+<style>
+.dev-section{padding:0 24px;margin-bottom:100px;}
+.dev-dark{max-width:1080px;margin:0 auto;background:var(--ink);border-radius:32px;padding:72px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+@media(max-width:900px){.dev-dark{grid-template-columns:1fr;padding:48px 32px;gap:40px;}}
+.dev-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:14px;}
+.dev-sub{font-size:.9rem;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:28px;}
+.dev-btns{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;}
+.dev-btn{padding:6px 15px;border-radius:var(--r);border:1px solid rgba(255,255,255,.16);background:transparent;color:rgba(255,255,255,.55);font-size:.8rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.dev-btn:hover,.dev-btn.on{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.32);color:#fff;}
+.dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.dev-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:22px 18px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:all .25s;}
+.dev-card:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);}
+.dev-icon{width:44px;height:44px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;}
+.dev-icon svg{stroke:rgba(255,255,255,.65);}
+.dev-name{font-size:.82rem;font-weight:600;color:rgba(255,255,255,.7);}
+.dev-type{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);}
+</style>
+<section class="dev-section" id="devices">
+  <div class="dev-dark rvs">
+    <div>
+      <h2 class="dev-h2">Flow, wherever you work</h2>
+      <p class="dev-sub">Flow runs natively on Mac, Windows, iOS, and Android. Use it at your desk for deep work and on your phone when you're on the move.</p>
+      <div class="dev-btns" id="devBtns">
+        <button class="dev-btn on" onclick="selDev(this)">Mac</button>
+        <button class="dev-btn" onclick="selDev(this)">Windows</button>
+        <button class="dev-btn" onclick="selDev(this)">iPhone</button>
+        <button class="dev-btn" onclick="selDev(this)">Android</button>
+      </div>
+      <a href="app.html" class="btn btn-dark" style="background:#fff;color:var(--ink);">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        Download for Windows
+      </a>
+    </div>
+    <div class="dev-grid">
+      <div class="dev-card"><div class="dev-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="dev-name">Mac</div><div class="dev-type">Desktop</div></div>
+      <div class="dev-card"><div class="dev-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><div class="dev-name">Windows</div><div class="dev-type">Desktop</div></div>
+      <div class="dev-card"><div class="dev-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="dev-name">iPhone</div><div class="dev-type">Mobile</div></div>
+      <div class="dev-card"><div class="dev-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div><div class="dev-name">Android</div><div class="dev-type">Mobile</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LOVE LETTERS ═══ -->
+<!-- ─── NEW: AI DEMO DARK CARD SECTION (photo + filler removal visual) ─── -->
+<style>
+.ai-demo-section{padding:0 24px;margin-bottom:100px;}
+.ai-demo-dark{max-width:1080px;margin:0 auto;background:var(--ink);border-radius:32px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:500px;}
+@media(max-width:820px){.ai-demo-dark{grid-template-columns:1fr;}}
+/* Left: photo mockup */
+.ai-demo-left{position:relative;overflow:hidden;min-height:320px;}
+/* Gradient photo stand-in — warm split tones like screenshot */
+.ai-demo-photo{position:absolute;inset:0;background:linear-gradient(135deg, #7B3F00 0%, #C1440E 30%, #3A6B9A 65%, #0D1B40 100%);}
+/* Person silhouette via CSS shapes */
+.ai-person{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:180px;}
+.ai-head{width:72px;height:72px;border-radius:50%;background:rgba(0,0,0,.5);margin:0 auto 6px;}
+.ai-body{width:120px;height:140px;background:rgba(0,0,0,.4);border-radius:60px 60px 20px 20px;margin:0 auto;position:relative;}
+.ai-body::before{content:'';position:absolute;top:20px;left:-20px;width:18px;height:80px;background:rgba(0,0,0,.35);border-radius:9px;transform:rotate(-8deg);}
+.ai-body::after{content:'';position:absolute;top:20px;right:-20px;width:18px;height:80px;background:rgba(0,0,0,.35);border-radius:9px;transform:rotate(8deg);}
+/* "Removed filler" orange pill tag */
+.ai-tag{position:absolute;top:22px;left:22px;background:var(--orange);color:#fff;font-size:.8rem;font-weight:700;padding:7px 16px;border-radius:var(--r);transform:rotate(-3deg);box-shadow:0 4px 16px rgba(232,125,46,.45);animation:tagPop 3s ease-in-out infinite;}
+@keyframes tagPop{0%,100%{transform:rotate(-3deg) scale(1);}50%{transform:rotate(-3deg) scale(1.04);}}
+/* Raw text overlay at bottom of photo */
+.ai-raw-overlay{position:absolute;bottom:0;left:0;right:0;padding:18px 22px;background:linear-gradient(transparent,rgba(0,0,0,.75));}
+.ai-raw-words{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.65;}
+.ai-raw-words s{color:rgba(255,100,80,.85);text-decoration-thickness:2px;}
+/* Right: clean output */
+.ai-demo-right{padding:52px 48px;display:flex;flex-direction:column;justify-content:center;}
+@media(max-width:820px){.ai-demo-right{padding:36px 28px;}}
+.ai-demo-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;}
+.ai-demo-h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:700;color:#fff;line-height:1.05;margin-bottom:14px;}
+.ai-demo-h3 em{font-style:italic;color:#B89FD8;}
+.ai-demo-sub{font-size:.9rem;color:rgba(255,255,255,.45);line-height:1.72;margin-bottom:28px;}
+/* Clean output card */
+.ai-clean-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 22px;margin-bottom:24px;}
+.ai-clean-lbl{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(123,94,167,.7);margin-bottom:8px;}
+.ai-clean-txt{font-size:.9rem;color:rgba(255,255,255,.82);line-height:1.7;font-style:italic;font-family:'Cormorant Garamond',Georgia,serif;}
+</style>
+<section class="ai-demo-section">
+  <div class="ai-demo-dark rvs">
+    <div class="ai-demo-left">
+      <div class="ai-demo-photo"></div>
+      <div class="ai-person">
+        <div class="ai-head"></div>
+        <div class="ai-body"></div>
+      </div>
+      <div class="ai-tag">Removed filler</div>
+      <div class="ai-raw-overlay">
+        <div class="ai-raw-words">
+          <s>uh yeah</s> so I think we should probably reach out to <s>uh</s> Jenny from legal, I think she said something about the, the NDA being like <s>you know</s> not finalized yet
+        </div>
+      </div>
+    </div>
+    <div class="ai-demo-right">
+      <div class="ai-demo-eyebrow">· — · AI Auto Edits</div>
+      <h3 class="ai-demo-h3">Speak naturally.<br/><em>Flow handles the rest.</em></h3>
+      <p class="ai-demo-sub">Rambled thoughts become clear, perfectly formatted text — without the filler words, ums, or false starts. Instantly.</p>
+      <div class="ai-clean-card">
+        <div class="ai-clean-lbl">✦ Flow writes</div>
+        <div class="ai-clean-txt">"Let's reach out to Jenny from Legal — she mentioned the NDA isn't finalized. We should follow up before the deadline."</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 22px;border-radius:var(--r);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);font-size:.85rem;font-weight:600;text-decoration:none;font-family:'Inter',sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Try Flow</a>
+        <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 22px;border-radius:var(--r);background:var(--purple);color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;font-family:'Inter',sans-serif;border:none;transition:all .2s;" onmouseover="this.style.background='#6B4E97'" onmouseout="this.style.background='var(--purple)'">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+          Download for Windows
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LOVE LETTERS ═══ -->
+<style>
+.love-section{padding:0 24px;margin-bottom:0;}
+.love-dark{max-width:1080px;margin:0 auto;background:var(--ink);border-radius:32px;padding:80px 60px 100px;text-align:center;position:relative;overflow:hidden;}
+@media(max-width:768px){.love-dark{padding:56px 28px 80px;border-radius:24px;}}
+.love-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,8vw,5.5rem);font-weight:700;color:#fff;line-height:1.0;position:relative;z-index:2;}
+/* Teal dashes */
+.ld{position:absolute;color:var(--teal);font-size:1.4rem;font-weight:900;z-index:1;pointer-events:none;line-height:1;}
+.ld1{top:24px;left:52px;transform:rotate(-42deg);}   .ld2{top:44px;right:90px;transform:rotate(28deg);}
+.ld3{top:88px;left:195px;transform:rotate(55deg);font-size:.9rem;} .ld4{top:48px;right:270px;transform:rotate(-18deg);font-size:1rem;}
+.ld5{bottom:44px;left:72px;transform:rotate(18deg);} .ld6{bottom:36px;right:110px;transform:rotate(-32deg);font-size:1rem;}
+.ld7{bottom:72px;left:310px;transform:rotate(10deg);font-size:.85rem;} .ld8{top:110px;right:150px;transform:rotate(-52deg);font-size:.8rem;}
+.ld9{top:30px;left:340px;transform:rotate(35deg);font-size:.75rem;} .ld10{bottom:55px;right:340px;transform:rotate(-12deg);font-size:.9rem;}
+/* Cards area */
+.quotes-area{max-width:1080px;margin:0 auto;padding:32px 0 0;overflow:hidden;position:relative;}
+.quotes-area::before,.quotes-area::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:4;pointer-events:none;}
+.quotes-area::before{left:0;background:linear-gradient(to right,var(--cream),transparent);}
+.quotes-area::after{right:0;background:linear-gradient(to left,var(--cream),transparent);}
+.qrow{display:flex;gap:18px;overflow-x:auto;padding:24px 24px 32px;scrollbar-width:none;cursor:grab;}
+.qrow::-webkit-scrollbar{display:none;}
+.qrow.dragging{cursor:grabbing;}
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:26px;min-width:272px;flex-shrink:0;box-shadow:0 2px 12px rgba(28,25,23,.05);transition:transform .3s var(--ease-out),box-shadow .3s;}
+.qcard:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(28,25,23,.1);}
+.qavatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;margin-bottom:14px;}
+.qtext{font-size:.875rem;color:var(--ink);line-height:1.7;margin-bottom:14px;font-style:italic;}
+.qname{font-size:.8rem;font-weight:700;color:var(--ink);}
+.qrole{font-size:.73rem;color:var(--ink-muted);margin-top:2px;}
+</style>
+<section class="love-section" id="love">
+  <div class="love-dark rvs">
+    <span class="ld ld1">—</span><span class="ld ld2">—</span><span class="ld ld3">—</span>
+    <span class="ld ld4">—</span><span class="ld ld5">—</span><span class="ld ld6">—</span>
+    <span class="ld ld7">—</span><span class="ld ld8">—</span><span class="ld ld9">—</span><span class="ld ld10">—</span>
+    <h2 class="love-h2">Love letters<br/>to Flow</h2>
+  </div>
+  <div class="quotes-area">
+    <div class="qrow" id="qrow">
+      <div class="qcard"><div class="qavatar" style="background:#0E7490;">SX</div><p class="qtext">"I've been using Flow almost every day since I downloaded it. It's probably my favorite part of the day, especially going through my inbox."</p><div class="qname">Suzanne Xie</div><div class="qrole">Partner, Neo</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#B45309;">SV</div><p class="qtext">"I can make quick edits while speaking to it because Flow really understands me. The accuracy and speed make it a real game changer."</p><div class="qname">Shashank Vemuri</div><div class="qrole">Scout, Soma Capital</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#6B7280;">RP</div><p class="qtext">"I have Parkinson's, and this app has just made my life so much easier. I can't even explain the change that it has provided for me."</p><div class="qname">Rich Pankey</div><div class="qrole">Indirect Sourcing Manager</div></div>
+      <div class="qcard"><div class="qavatar" style="background:var(--purple);">RV</div><p class="qtext">"This is the best AI product I've used since ChatGPT. The speed and accuracy are unlike anything I've seen."</p><div class="qname">Rahul Vohra</div><div class="qrole">CEO, Superhuman</div></div>
+      <div class="qcard"><div class="qavatar" style="background:var(--green);">HM</div><p class="qtext">"Flow is currently blowing my mind with how fast and useful it is. It just keeps up no matter what."</p><div class="qname">Hargun Mujral</div><div class="qrole">ML Platforms at X</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#B91C1C;">JS</div><p class="qtext">"I was able to dictate ~70% of our Q2 board doc with Flow. It was a massive time saver — never going back."</p><div class="qname">Jeff Seibert</div><div class="qrole">CEO, Digits AI</div></div>
+      <div class="qcard"><div class="qavatar" style="background:var(--orange);">TT</div><p class="qtext">"You're making texting actually delightful right now! Can see it becoming a can't-live-without product fast."</p><div class="qname">Tara Tan</div><div class="qrole">Founding Partner, Strange Ventures</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#065F46;">AW</div><p class="qtext">"Stuttering and it still works really well. I think it's really quick, I love it. It just understands me."</p><div class="qname">Agam Walia</div><div class="qrole">Student, UC Berkeley</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#0369A1;">JT</div><p class="qtext">"Flow is that extra part of your brain that helps you formulate full sentences when you might be stuck in thought."</p><div class="qname">Jeannette Tan</div><div class="qrole">Fiction Writer</div></div>
+      <div class="qcard"><div class="qavatar" style="background:#1E3A5F;">GD</div><p class="qtext">"I'm afraid I'm getting addicted. It allows me to get into a flow state without autocorrect stopping my thinking."</p><div class="qname">Greg D.</div><div class="qrole">Bestselling Author & Coach</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CASE STUDIES ═══ -->
+<style>
+.case-section{padding:100px 24px;border-top:1px solid var(--border);}
+.case-inner{max-width:1080px;margin:0 auto;}
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:56px;}
+@media(max-width:880px){.case-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:440px){.case-grid{grid-template-columns:1fr;}}
+.cc{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:32px 24px;transition:transform .3s var(--ease-out),box-shadow .3s;}
+.cc:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(28,25,23,.1);}
+.cc-stat{font-family:'Cormorant Garamond',Georgia,serif;font-size:4rem;font-weight:700;color:var(--purple);line-height:1;margin-bottom:6px;}
+.cc-quote{font-size:.82rem;color:var(--ink-muted);line-height:1.6;margin-bottom:18px;font-style:italic;}
+.cc-div{height:1px;background:var(--border);margin-bottom:16px;}
+.cc-person{display:flex;align-items:center;gap:10px;}
+.cc-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0;}
+.cc-name{font-size:.82rem;font-weight:700;color:var(--ink);}
+.cc-role{font-size:.72rem;color:var(--ink-muted);}
+</style>
+<section class="case-section" id="results">
+  <div class="case-inner">
+    <div class="rv tc">
+      <p class="eyebrow">Real Results</p>
+      <h2 class="h2 ma tc">People who love <em>Flow</em></h2>
+      <p class="lead ma tc" style="margin-top:12px;">From solo creators to enterprise teams — real numbers from real users.</p>
+    </div>
+    <div class="case-grid">
+      <div class="cc rv d1"><div class="cc-stat">4×</div><div class="cc-quote">"Flow lets me reply in seconds, not minutes."</div><div class="cc-div"></div><div class="cc-person"><div class="cc-av" style="background:var(--purple);">GV</div><div><div class="cc-name">Gaurav Vohra</div><div class="cc-role">Startup Advisor</div></div></div></div>
+      <div class="cc rv d2"><div class="cc-stat">90%</div><div class="cc-quote">"Flow fits into every corner of how I work."</div><div class="cc-div"></div><div class="cc-person"><div class="cc-av" style="background:var(--orange);">SB</div><div><div class="cc-name">Steven Bartlett</div><div class="cc-role">Host, Diary of a CEO</div></div></div></div>
+      <div class="cc rv d3"><div class="cc-stat">20%</div><div class="cc-quote">"Flow gave our team a shared speed advantage."</div><div class="cc-div"></div><div class="cc-person"><div class="cc-av" style="background:var(--teal);">CL</div><div><div class="cc-name">Teams at Clay</div><div class="cc-role">200+ employees · B2B</div></div></div></div>
+      <div class="cc rv d4"><div class="cc-stat">70%</div><div class="cc-quote">"I dictated most of our Q2 board doc — massive time saver."</div><div class="cc-div"></div><div class="cc-person"><div class="cc-av" style="background:#B91C1C;">JS</div><div><div class="cc-name">Jeff Seibert</div><div class="cc-role">CEO, Digits AI</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<style>
+.cta-section{padding:0 24px;margin-bottom:100px;}
+.cta-dark{max-width:1080px;margin:0 auto;background:var(--ink);border-radius:32px;padding:100px 60px;text-align:center;position:relative;overflow:hidden;}
+@media(max-width:768px){.cta-dark{padding:72px 28px;border-radius:24px;}}
+.cta-dark::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 110%,rgba(123,94,167,.3) 0%,transparent 65%);pointer-events:none;}
+.cta-h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1.0;margin-bottom:14px;position:relative;z-index:1;}
+.cta-h2 em{font-style:italic;color:rgba(255,255,255,.4);}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,.42);max-width:420px;margin:0 auto 36px;line-height:1.7;position:relative;z-index:1;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+.cta-note{font-size:.75rem;color:rgba(255,255,255,.22);margin-top:18px;position:relative;z-index:1;}
+</style>
+<section class="cta-section" id="download">
+  <div class="cta-dark rvs">
+    <h2 class="cta-h2">Start <em>flowing.</em></h2>
+    <p class="cta-sub">Effortless voice dictation in every application. 4× faster than typing, AI-powered, built by Sujit Sadalage.</p>
+    <div class="cta-btns">
+      <a href="app.html" class="btn btn-lg" style="background:#fff;color:var(--ink);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+        Download for Windows
+      </a>
+      <a href="app.html" class="btn btn-outline-w btn-lg">Try in Browser</a>
+    </div>
+    <p class="cta-note">Available on Mac · Windows · iPhone · Android · Free to try</p>
+  </div>
+</section>
+
+<!-- ═══ CONTACT SECTION ═══ -->
+<style>
+.contact-section{padding:100px 24px;border-top:1px solid var(--border);}
+.contact-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+@media(max-width:800px){.contact-inner{grid-template-columns:1fr;gap:48px;}}
+.contact-info-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px;}
+.ci-icon{width:44px;height:44px;border-radius:12px;background:var(--cream-dark);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.contact-info-item:hover .ci-icon{background:var(--purple);border-color:var(--purple);}
+.contact-info-item:hover .ci-icon svg{stroke:#fff;}
+.ci-icon svg{stroke:var(--ink-muted);transition:stroke .3s;}
+.ci-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:4px;}
+.ci-val{font-size:.95rem;font-weight:600;color:var(--ink);}
+.ci-val a{color:var(--ink);text-decoration:none;}
+.ci-val a:hover{color:var(--purple);}
+/* Contact form */
+.cf{display:flex;flex-direction:column;gap:14px;}
+.cf-field{display:flex;flex-direction:column;gap:6px;}
+.cf-label{font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-light);}
+.cf-input,.cf-textarea{width:100%;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 16px;font-size:.9rem;font-family:'Inter',sans-serif;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;}
+.cf-input::placeholder,.cf-textarea::placeholder{color:var(--ink-light);}
+.cf-input:focus,.cf-textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,94,167,.1);}
+.cf-textarea{resize:vertical;min-height:130px;line-height:1.6;}
+.cf-submit{background:var(--purple);color:#fff;border:none;border-radius:var(--r);height:52px;padding:0 32px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;align-self:flex-start;}
+.cf-submit:hover{background:#6B4E97;transform:translateY(-2px);box-shadow:0 8px 28px rgba(123,94,167,.3);}
+.cf-submit:active{transform:scale(.97);}
+.cf-success{display:none;padding:16px 20px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:12px;color:var(--green);font-size:.9rem;font-weight:600;}
+</style>
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="rvl">
+      <p class="eyebrow">Get in Touch</p>
+      <h2 class="h2" style="margin-bottom:14px;">Let's <em>talk</em></h2>
+      <p class="lead" style="margin-bottom:40px;">Have a question, want to collaborate, or just want to say hi? Reach out — Sujit reads every message.</p>
+      <div class="contact-info-item">
+        <div class="ci-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:sujit@flowapp.dev">sujit@flowapp.dev</a></div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="ci-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+        <div><div class="ci-label">LinkedIn</div><div class="ci-val"><a href="https://linkedin.com/in/sujitsadalage" target="_blank" rel="noopener">linkedin.com/in/sujitsadalage</a></div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="ci-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div><div class="ci-label">GitHub</div><div class="ci-val"><a href="https://github.com/sujitsadalage" target="_blank" rel="noopener">github.com/sujitsadalage</a></div></div>
+      </div>
+      <div class="contact-info-item">
+        <div class="ci-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="ci-label">Location</div><div class="ci-val">India</div></div>
+      </div>
+    </div>
+    <div class="rvr">
+      <form class="cf" id="contactForm" onsubmit="submitContact(event)">
+        <div class="cf-field">
+          <label class="cf-label">Your Name</label>
+          <input class="cf-input" type="text" placeholder="Sujit Sadalage" required/>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Email Address</label>
+          <input class="cf-input" type="email" placeholder="you@example.com" required/>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Subject</label>
+          <input class="cf-input" type="text" placeholder="What's this about?"/>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Message</label>
+          <textarea class="cf-textarea" placeholder="Tell me what's on your mind..." required></textarea>
+        </div>
+        <button type="submit" class="cf-submit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Message
+        </button>
+        <div class="cf-success" id="cfSuccess">✓ Message sent! Sujit will get back to you soon.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<style>
+.footer{background:var(--cream);border-top:1px solid var(--border);padding-top:72px;}
+.footer-nav{max-width:1080px;margin:0 auto;padding:0 24px 60px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;}
+@media(max-width:860px){.footer-nav{grid-template-columns:1fr 1fr;gap:32px;}}
+@media(max-width:480px){.footer-nav{grid-template-columns:1fr;gap:28px;}}
+.fc-col-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:16px;}
+.fl{display:block;font-size:.88rem;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s;}
+.fl:hover{color:var(--ink);}
+.footer-brand p{font-size:.875rem;color:var(--ink-muted);line-height:1.65;max-width:240px;margin-top:14px;}
+/* Big wordmark */
+.footer-wm{border-top:1px solid var(--border);padding:44px 24px 0;max-width:1080px;margin:0 auto;display:flex;align-items:flex-end;gap:20px;overflow:hidden;}
+.footer-bars{display:flex;align-items:flex-end;gap:10px;padding-bottom:6px;flex-shrink:0;}
+.fb{background:var(--ink);border-radius:10px;flex-shrink:0;}
+.footer-wm-text{font-size:clamp(90px,15vw,200px);font-weight:900;color:var(--ink);line-height:.88;letter-spacing:-.04em;font-family:'Inter',sans-serif;}
+/* Bottom bar */
+.footer-bottom{border-top:1px solid var(--border);padding:18px 24px;margin-top:0;}
+.footer-bottom-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.fcopy{font-size:.78rem;color:var(--ink-light);}
+.fcopy a{color:var(--ink-light);text-decoration:none;margin:0 8px;}
+.fcopy a:hover{color:var(--ink);}
+.fsocials{display:flex;gap:8px;}
+.fsi{width:32px;height:32px;border-radius:50%;background:var(--cream-dark);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:all .22s;}
+.fsi:hover{background:var(--ink);border-color:var(--ink);}
+.fsi:hover svg{stroke:#fff;}
+.fsi svg{stroke:var(--ink-muted);transition:stroke .22s;}
+</style>
+<footer class="footer" id="footer">
+  <div class="footer-nav">
+    <div class="footer-brand">
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+        <div style="display:flex;align-items:flex-end;gap:3px;height:18px;">
+          <div style="width:5px;height:10px;background:var(--ink);border-radius:3px;"></div>
+          <div style="width:5px;height:16px;background:var(--ink);border-radius:3px;"></div>
+          <div style="width:5px;height:8px;background:var(--ink);border-radius:3px;"></div>
+          <div style="width:5px;height:13px;background:var(--ink);border-radius:3px;"></div>
+        </div>
+        <span style="font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;">Flow</span>
+      </a>
+      <p>The voice-to-text AI that turns speech into clear, polished writing in every app. Built by Sujit Sadalage.</p>
+    </div>
+    <div>
+      <div class="fc-col-title">Product</div>
+      <a href="features.html" class="fl">Features</a>
+      <a href="use-cases.html" class="fl">Use Cases</a>
+      <a href="app.html" class="fl">Try App</a>
+      <a href="features.html#ai" class="fl">AI Auto Edits</a>
+      <a href="features.html#languages" class="fl">Languages</a>
+    </div>
+    <div>
+      <div class="fc-col-title">Company</div>
+      <a href="about.html" class="fl">About</a>
+      <a href="about.html#story" class="fl">Our Story</a>
+      <a href="contact.html" class="fl">Contact</a>
+      <a href="https://github.com/sujitsadalage" target="_blank" rel="noopener" class="fl">GitHub</a>
+    </div>
+    <div>
+      <div class="fc-col-title">Resources</div>
+      <a href="use-cases.html#developers" class="fl">For Developers</a>
+      <a href="use-cases.html#students" class="fl">For Students</a>
+      <a href="use-cases.html#teams" class="fl">For Teams</a>
+      <a href="https://console.groq.com" target="_blank" rel="noopener" class="fl">Get Groq API Key</a>
+      <a href="contact.html" class="fl">Support</a>
+    </div>
+  </div>
+  <!-- Giant wordmark -->
+  <div class="footer-wm">
+    <div class="footer-bars">
+      <div class="fb" style="width:46px;height:110px;"></div>
+      <div class="fb" style="width:46px;height:170px;"></div>
+      <div class="fb" style="width:46px;height:84px;"></div>
+      <div class="fb" style="width:46px;height:148px;"></div>
+    </div>
+    <span class="footer-wm-text">Flow</span>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span class="fcopy">
+        © 2025 Flow · Built by <strong>Sujit Sadalage</strong> · All rights reserved
+        <a href="#">Privacy</a><a href="#">Terms</a>
+      </span>
+      <div class="fsocials">
+        <a href="https://github.com/sujitsadalage" target="_blank" class="fsi" aria-label="GitHub">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/sujitsadalage" target="_blank" class="fsi" aria-label="LinkedIn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="mailto:sujit@flowapp.dev" class="fsi" aria-label="Email">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── SCROLL REVEAL ── */
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el => ro.observe(el));
+
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll', () => {
+  const p = document.getElementById('navPill');
+  if (p) p.style.boxShadow = window.scrollY > 30
+    ? '0 8px 40px rgba(28,25,23,.13)' : '0 4px 24px rgba(28,25,23,.08)';
+}, { passive: true });
+
+/* ── MOBILE NAV ── */
+function openMobNav() { document.getElementById('mobDrawer').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMobNav(e) {
+  if (e && e.target !== document.getElementById('mobDrawer')) return;
+  document.getElementById('mobDrawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── SPEED COUNTERS ── */
+function animNum(el, target, suf, ms) {
+  if (!el) return; let v = 0; const step = target / (ms / 16);
+  const t = setInterval(() => {
+    v += step; if (v >= target) { el.textContent = target + suf; clearInterval(t); }
+    else el.textContent = Math.floor(v) + suf;
+  }, 16);
+}
+const speedIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const kf = document.getElementById('kbFill'), vf = document.getElementById('vfFill');
+    setTimeout(() => { if (kf) kf.style.width = kf.dataset.w + '%'; if (vf) vf.style.width = vf.dataset.w + '%'; }, 150);
+    animNum(document.getElementById('kbWpm'), 45, ' wpm', 1500);
+    animNum(document.getElementById('vfWpm'), 220, ' wpm', 1200);
+    speedIO.disconnect();
+  });
+}, { threshold: 0.35 });
+const sg = document.querySelector('.speed-cards');
+if (sg) speedIO.observe(sg);
+
+/* ── STATS COUNTERS ── */
+const statsIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    animNum(document.getElementById('sn1'), 4, '×', 1000);
+    animNum(document.getElementById('sn2'), 100, '+', 1200);
+    animNum(document.getElementById('sn3'), 0.3, 's', 800);
+    animNum(document.getElementById('sn4'), 95, '%', 1100);
+    statsIO.disconnect();
+  });
+}, { threshold: 0.4 });
+const sb = document.querySelector('.stats-inner');
+if (sb) statsIO.observe(sb);
+
+/* ── WORK CHIPS ── */
+const workData = {
+  accessibility:{ say:'"um, I just need to, uh, reply to that email about the accessibility audit for the team"', write:'"I need to reply to the email about the accessibility audit for the team."' },
+  creators:{ say:'"so like, I was thinking for the video, we could do a day in the life, you know, kind of thing"', write:'"For the next video, I\'m thinking a day-in-the-life format."' },
+  support:{ say:'"tell the customer we\'re looking into the issue and should have an update by, like, end of day Friday"', write:'"We\'re looking into the issue and will have a full update by end of day Friday."' },
+  developers:{ say:'"the bug is basically like the API returning null instead of an empty array when there are no results"', write:'"Bug: the API returns null instead of an empty array when no results exist."' },
+  lawyers:{ say:'"I need to uh draft a quick summary of the, the NDA terms we discussed in the call with the client"', write:'"I need to draft a brief summary of the NDA terms discussed in today\'s client call."' },
+  leaders:{ say:'"we should probably, like, align the team on the Q4 priorities before the all-hands next week"', write:'"We should align the team on Q4 priorities before next week\'s all-hands."' },
+  sales:{ say:'"follow up with Marcus from Acme Corp about the proposal we sent last Tuesday, he seemed interested"', write:'"Follow up with Marcus at Acme Corp regarding last Tuesday\'s proposal — he expressed strong interest."' },
+  students:{ say:'"I have to write the intro paragraph for the essay on climate change and I keep procrastinating on it"', write:'"I need to write the introductory paragraph for my essay on climate change."' },
+  teams:{ say:'"we should probably schedule a sync for Thursday afternoon to go over the Q3 roadmap updates"', write:'"Let\'s schedule a Thursday afternoon sync to review the Q3 roadmap updates."' }
+};
+document.querySelectorAll('.wchip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.wchip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    const key = chip.dataset.use, d = workData[key];
+    const say = document.getElementById('workSay'), write = document.getElementById('workWrite');
+    if (!d || !say) return;
+    [say, write].forEach(el => { el.style.opacity = '0'; });
+    setTimeout(() => {
+      say.textContent = d.say; write.textContent = d.write;
+      [say, write].forEach(el => { el.style.transition = 'opacity .3s ease'; el.style.opacity = '1'; });
+    }, 160);
+  });
+});
+
+/* ── DEVICE BUTTONS ── */
+function selDev(btn) {
+  document.querySelectorAll('.dev-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+/* ── QUOTE ROW DRAG-SCROLL ── */
+const qr = document.getElementById('qrow');
+if (qr) {
+  let down = false, sx, sl;
+  qr.addEventListener('mousedown', e => { down = true; qr.classList.add('dragging'); sx = e.pageX - qr.offsetLeft; sl = qr.scrollLeft; });
+  qr.addEventListener('mouseleave', () => { down = false; qr.classList.remove('dragging'); });
+  qr.addEventListener('mouseup', () => { down = false; qr.classList.remove('dragging'); });
+  qr.addEventListener('mousemove', e => { if (!down) return; e.preventDefault(); qr.scrollLeft = sl - (e.pageX - qr.offsetLeft - sx) * 1.5; });
+}
+
+/* ── CONTACT FORM ── */
+function submitContact(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.cf-submit'), suc = document.getElementById('cfSuccess');
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  setTimeout(() => {
+    btn.style.display = 'none';
+    if (suc) suc.style.display = 'block';
+    e.target.reset();
+  }, 1200);
+}
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

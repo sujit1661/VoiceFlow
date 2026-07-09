@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flow — Voice App · Built by Sujit Sadalage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cream:#F3EFE6;--cream-d:#EDE8DE;--cream-dd:#E4DECE;
+  --ink:#1C1917;--ink-m:#6B6560;--ink-l:#9C9590;
+  --purple:#7B5EA7;--purple-m:#9B7EC8;--purple-pale:rgba(123,94,167,.08);
+  --green:#16a34a;--green-pale:rgba(22,163,74,.08);
+  --border:#DDD8CF;--border-l:#EAE5DC;--white:#FFFFFF;--r:999px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(--cream);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ── HEADER ── */
+.hdr{background:rgba(243,239,230,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.hdr-inner{max-width:1140px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.hdr-logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;}
+.hdr-bars{display:flex;align-items:flex-end;gap:2.5px;height:16px;}
+.hb{width:4px;background:var(--ink);border-radius:2px;}
+.hdr-name{font-size:.9rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.hdr-center{display:flex;align-items:center;gap:10px;}
+.ctx-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);}
+select.ctx-sel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);color:var(--ink);font-size:.82rem;font-weight:500;font-family:'Inter',sans-serif;padding:6px 30px 6px 14px;outline:none;cursor:pointer;transition:border-color .2s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B6560' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;}
+select.ctx-sel:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,94,167,.1);}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.be-pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r);background:var(--white);border:1px solid var(--border);font-size:.72rem;font-weight:600;color:var(--ink-m);}
+.be-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-l);flex-shrink:0;}
+.btn-settings{width:36px;height:36px;border-radius:50%;background:var(--white);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+.btn-settings:hover{background:var(--cream-d);border-color:var(--ink-l);}
+.btn-settings svg{stroke:var(--ink-m);}
+@media(max-width:680px){.hdr-center{display:none;}}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <a href="index.html" class="hdr-logo">
+      <div class="hdr-bars">
+        <div class="hb" style="height:9px;"></div>
+        <div class="hb" style="height:15px;"></div>
+        <div class="hb" style="height:7px;"></div>
+        <div class="hb" style="height:12px;"></div>
+      </div>
+      <span class="hdr-name">Flow</span>
+    </a>
+    <div class="hdr-center">
+      <span class="ctx-label">Context</span>
+      <select id="ctxSel" class="ctx-sel">
+        <option value="general">✦ General</option>
+        <option value="email">📧 Email</option>
+        <option value="document">📄 Document</option>
+        <option value="note">📝 Note</option>
+        <option value="chat">💬 Chat</option>
+        <option value="code">💻 Code</option>
+      </select>
+      <span style="font-size:.72rem;color:var(--ink-l);display:flex;align-items:center;gap:4px;">
+        Hold <kbd style="padding:2px 7px;border-radius:5px;background:var(--cream-dd);border:1px solid var(--border);font-size:.68rem;font-weight:700;color:var(--ink-m);">Ctrl</kbd> to record
+      </span>
+    </div>
+    <div class="hdr-right">
+      <div class="be-pill">
+        <div class="be-dot" id="beDot"></div>
+        <span id="beStatus">Checking…</span>
+      </div>
+      <button class="btn-settings" id="settingsBtn" aria-label="Settings">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+/* ── LAYOUT ── */
+.app-body{max-width:1140px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:260px 1fr;gap:20px;}
+@media(max-width:820px){.app-body{grid-template-columns:1fr;}}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:14px;}
+.scard{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:20px;}
+.scard-title{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-l);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.hist-item{padding:10px 12px;border-radius:12px;cursor:pointer;transition:background .18s;border:1px solid transparent;}
+.hist-item:hover{background:var(--cream-d);border-color:var(--border);}
+.hist-prev{font-size:.78rem;color:var(--ink);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hist-meta{font-size:.65rem;color:var(--ink-l);margin-top:3px;display:flex;gap:6px;}
+.hist-empty{font-size:.78rem;color:var(--ink-l);text-align:center;padding:14px 0;font-style:italic;}
+.sc-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
+.sc-key{font-size:.78rem;color:var(--ink-m);}
+.sc-val{padding:2px 8px;border-radius:5px;background:var(--cream-dd);border:1px solid var(--border);font-size:.68rem;font-weight:700;color:var(--ink-m);font-family:monospace;}
+.setup-tip{background:rgba(123,94,167,.06);border:1px solid rgba(123,94,167,.15);border-radius:16px;padding:16px;}
+.tip-title{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.tip-desc{font-size:.75rem;color:var(--ink-m);line-height:1.6;margin-bottom:10px;}
+.tip-code{background:var(--ink);border-radius:8px;padding:10px 14px;font-size:.72rem;color:rgba(255,255,255,.65);font-family:'Courier New',monospace;line-height:1.65;word-break:break-all;}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;gap:16px;}
+
+/* ── MIC CARD ── */
+.mic-card{background:var(--white);border:1px solid var(--border);border-radius:24px;padding:44px 24px 36px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative;overflow:hidden;}
+/* Subtle radial glow */
+.mic-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:200px;background:radial-gradient(ellipse,rgba(123,94,167,.05) 0%,transparent 70%);pointer-events:none;}
+
+/* Status badge */
+.st-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:var(--r);font-size:.82rem;font-weight:600;font-family:'Inter',sans-serif;border:1px solid var(--border);background:var(--cream-d);color:var(--ink-m);transition:all .25s;}
+.st-badge.rec{background:rgba(22,163,74,.08);border-color:rgba(22,163,74,.22);color:var(--green);}
+.st-badge.proc{background:rgba(123,94,167,.08);border-color:rgba(123,94,167,.22);color:var(--purple);}
+.st-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.st-dot.pulse{animation:stPulse 1s ease-in-out infinite;}
+@keyframes stPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.6);}}
+
+/* Waveform */
+.wvf{display:none;align-items:center;gap:2.5px;height:32px;}
+.wvf.show{display:flex;}
+.wvf-b{width:3px;background:var(--green);border-radius:2px;animation:wvAnim 1.2s ease-in-out infinite;}
+.wvf-b:nth-child(1){height:5px;animation-delay:.00s;} .wvf-b:nth-child(2){height:10px;animation-delay:.06s;}
+.wvf-b:nth-child(3){height:18px;animation-delay:.12s;} .wvf-b:nth-child(4){height:26px;animation-delay:.18s;}
+.wvf-b:nth-child(5){height:14px;animation-delay:.24s;} .wvf-b:nth-child(6){height:30px;animation-delay:.30s;}
+.wvf-b:nth-child(7){height:20px;animation-delay:.36s;} .wvf-b:nth-child(8){height:28px;animation-delay:.30s;}
+.wvf-b:nth-child(9){height:16px;animation-delay:.24s;} .wvf-b:nth-child(10){height:22px;animation-delay:.18s;}
+.wvf-b:nth-child(11){height:10px;animation-delay:.12s;} .wvf-b:nth-child(12){height:6px;animation-delay:.06s;}
+@keyframes wvAnim{0%,100%{transform:scaleY(.25);opacity:.3;}50%{transform:scaleY(1);opacity:1;}}
+
+/* Mic button */
+.mic-wrap{position:relative;padding:24px;}
+.ring{position:absolute;border-radius:50%;border:1.5px solid rgba(22,163,74,.3);animation:ringOut 1.6s ease-out infinite;display:none;pointer-events:none;}
+.ring.r1{inset:-20px;} .ring.r2{inset:-36px;animation-delay:.55s;}
+@keyframes ringOut{0%{opacity:.65;transform:scale(.9);}100%{opacity:0;transform:scale(1.15);}}
+.mic-btn{width:90px;height:90px;border-radius:50%;background:var(--ink);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:0 6px 24px rgba(28,25,23,.18),0 2px 6px rgba(28,25,23,.1);transition:transform .2s,background .2s,box-shadow .2s;}
+.mic-btn:hover:not(:disabled){transform:scale(1.06);box-shadow:0 10px 32px rgba(28,25,23,.22);}
+.mic-btn:active{transform:scale(.96);}
+.mic-btn.rec{background:var(--green);box-shadow:0 6px 24px rgba(22,163,74,.32);animation:micGlow 1.8s ease-in-out infinite;}
+.mic-btn.proc{background:var(--purple);box-shadow:0 6px 24px rgba(123,94,167,.3);}
+.mic-btn:disabled{opacity:.6;cursor:not-allowed;}
+@keyframes micGlow{0%,100%{box-shadow:0 6px 24px rgba(22,163,74,.32);}50%{box-shadow:0 6px 36px rgba(22,163,74,.52);}}
+.mic-btn.rec ~ .ring{display:block;}
+
+/* Timer */
+.rec-timer{display:none;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--ink-m);}
+.rec-timer.show{display:flex;}
+.rt-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:stPulse .9s step-end infinite;}
+
+/* Hint text */
+.mic-hint{font-size:.78rem;color:var(--ink-l);line-height:1.5;}
+.kbd-chip{display:inline-block;padding:1px 7px;border-radius:4px;background:var(--cream-dd);border:1px solid var(--border);font-size:.68rem;font-weight:700;color:var(--ink-m);font-family:monospace;}
+</style>
+
+<!-- APP BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <!-- History -->
+    <div class="scard">
+      <div class="scard-title">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Recent
+      </div>
+      <div id="histList"><p class="hist-empty">No recordings yet</p></div>
+      <button id="clearHistBtn" style="margin-top:10px;width:100%;font-size:.72rem;color:var(--ink-l);background:none;border:none;cursor:pointer;padding:4px;font-family:'Inter',sans-serif;transition:color .2s;" onmouseover="this.style.color='var(--ink-m)'" onmouseout="this.style.color='var(--ink-l)'">Clear history</button>
+    </div>
+    <!-- Shortcuts -->
+    <div class="scard">
+      <div class="scard-title">Shortcuts</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div class="sc-row"><span class="sc-key">Record</span><span class="sc-val">Hold Ctrl</span></div>
+        <div class="sc-row"><span class="sc-key">Copy output</span><span class="sc-val">Ctrl+C</span></div>
+        <div class="sc-row"><span class="sc-key">Clear</span><span class="sc-val">Esc</span></div>
+      </div>
+    </div>
+    <!-- Global hotkey tip -->
+    <div class="setup-tip">
+      <div class="tip-title">Global Hotkey</div>
+      <div class="tip-desc">Works in any app — Slack, Gmail, VS Code. Run the hotkey service:</div>
+      <div class="tip-code">cd hotkey_service<br/>python service.py</div>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main class="main">
+    <!-- Mic card -->
+    <div class="mic-card">
+      <div class="st-badge" id="stBadge">
+        <div class="st-dot" id="stDot"></div>
+        <span id="stText">Press &amp; hold Ctrl to record</span>
+      </div>
+      <div class="wvf" id="wvf">
+        <div class="wvf-b"></div><div class="wvf-b"></div><div class="wvf-b"></div>
+        <div class="wvf-b"></div><div class="wvf-b"></div><div class="wvf-b"></div>
+        <div class="wvf-b"></div><div class="wvf-b"></div><div class="wvf-b"></div>
+        <div class="wvf-b"></div><div class="wvf-b"></div><div class="wvf-b"></div>
+      </div>
+      <div class="mic-wrap">
+        <div class="ring r1" id="ring1"></div>
+        <div class="ring r2" id="ring2"></div>
+        <button class="mic-btn" id="micBtn" aria-label="Hold to record">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z" fill="rgba(255,255,255,.15)"/>
+            <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+      </div>
+      <div class="rec-timer" id="recTimer">
+        <div class="rt-dot"></div>
+        <span id="timerDisp" style="font-family:'Inter',monospace;font-weight:700;">00:00</span>
+      </div>
+      <p class="mic-hint">Click the mic, or hold <span class="kbd-chip">Ctrl</span> anywhere on the page</p>
+    </div>
+
+    <!-- Output card -->
+    <style>
+    .out-card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:24px;}
+    .out-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+    .out-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:9px;}
+    .ai-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--r);background:rgba(123,94,167,.08);border:1px solid rgba(123,94,167,.2);font-size:.68rem;font-weight:700;color:var(--purple);font-family:'Inter',sans-serif;letter-spacing:.04em;}
+    .spinner{width:15px;height:15px;border-radius:50%;border:2px solid rgba(123,94,167,.2);border-top-color:var(--purple);animation:spin .75s linear infinite;display:none;}
+    .spinner.show{display:inline-block;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .out-actions{display:flex;align-items:center;gap:7px;}
+    .abtn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+    .abtn-copy{background:rgba(123,94,167,.08);border:1px solid rgba(123,94,167,.18);color:var(--purple);}
+    .abtn-copy:hover{background:rgba(123,94,167,.14);}
+    .abtn-clear{background:var(--cream-d);border:1px solid var(--border);color:var(--ink-m);}
+    .abtn-clear:hover{background:var(--cream-dd);color:var(--ink);}
+    .raw-box{display:none;margin-bottom:14px;padding:12px 16px;background:var(--cream-d);border:1px solid var(--border);border-radius:12px;}
+    .raw-lbl{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);margin-bottom:5px;}
+    .raw-txt{font-size:.82rem;color:var(--ink-m);line-height:1.65;font-style:italic;}
+    textarea.out-ta{width:100%;min-height:144px;padding:16px 18px;background:var(--cream-d);border:1px solid var(--border);border-radius:14px;color:var(--ink);font-size:.9rem;line-height:1.78;font-family:'Inter',sans-serif;resize:vertical;outline:none;transition:border-color .22s,box-shadow .22s;}
+    textarea.out-ta::placeholder{color:var(--ink-l);font-style:italic;}
+    textarea.out-ta:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,94,167,.09);}
+    textarea.out-ta.has-content{border-color:rgba(123,94,167,.2);}
+    .out-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
+    .err-msg{font-size:.78rem;color:#b91c1c;display:none;}
+    .char-ct{font-size:.72rem;color:var(--ink-l);}
+    /* Typing cursor */
+    .tcursor{display:inline-block;width:2px;height:.9em;background:var(--purple);vertical-align:text-bottom;margin-left:1px;animation:tcBlink .9s step-end infinite;}
+    @keyframes tcBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+    </style>
+    <div class="out-card">
+      <div class="out-hdr">
+        <div class="out-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-m)" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Output
+          <span class="ai-badge" id="aiBadge" style="display:none;">✦ AI Polished</span>
+          <div class="spinner" id="spinner"></div>
+        </div>
+        <div class="out-actions">
+          <button class="abtn abtn-copy" id="copyBtn" style="display:none;" aria-label="Copy text">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+          <button class="abtn abtn-clear" id="clearBtn" aria-label="Clear output">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            Clear
+          </button>
+        </div>
+      </div>
+      <div class="raw-box" id="rawBox">
+        <div class="raw-lbl">Raw transcript</div>
+        <div class="raw-txt" id="rawTxt"></div>
+      </div>
+      <textarea class="out-ta" id="outTa" placeholder="Your transcribed &amp; polished text will appear here…" rows="6" aria-label="Transcription output"></textarea>
+      <div class="out-foot">
+        <div class="err-msg" id="errMsg"></div>
+        <div class="char-ct" id="charCt" style="margin-left:auto;">0 characters</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- SETTINGS PANEL -->
+<style>
+.sp-overlay{display:none;position:fixed;inset:0;background:rgba(28,25,23,.35);backdrop-filter:blur(4px);z-index:100;}
+.sp-overlay.open{display:block;}
+.sp{position:fixed;top:0;right:0;bottom:0;width:min(380px,92vw);background:var(--white);border-left:1px solid var(--border);z-index:101;padding:0;overflow-y:auto;transform:translateX(100%);transition:transform .32s cubic-bezier(.22,.61,.36,1);}
+.sp.open{transform:translateX(0);box-shadow:-16px 0 48px rgba(28,25,23,.1);}
+.sp-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--white);z-index:1;}
+.sp-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;font-weight:700;color:var(--ink);}
+.sp-close{width:32px;height:32px;border-radius:50%;background:var(--cream-d);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.sp-close:hover{background:var(--cream-dd);}
+.sp-body{padding:24px;}
+.sp-group{margin-bottom:22px;}
+.sp-lbl{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);display:block;margin-bottom:7px;}
+.sp-input{width:100%;padding:10px 14px;border-radius:12px;background:var(--cream-d);border:1px solid var(--border);color:var(--ink);font-size:.875rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+.sp-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,94,167,.08);}
+.sp-hint{font-size:.72rem;color:var(--ink-l);margin-top:5px;}
+.sp-select{width:100%;padding:10px 32px 10px 14px;border-radius:12px;background:var(--cream-d);border:1px solid var(--border);color:var(--ink);font-size:.875rem;font-family:'Inter',sans-serif;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236B6560' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer;transition:border-color .2s;}
+.sp-select:focus{border-color:var(--purple);}
+.radio-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;cursor:pointer;}
+.radio-row input{margin-top:3px;accent-color:var(--purple);flex-shrink:0;}
+.radio-title{font-size:.875rem;font-weight:600;color:var(--ink);}
+.radio-sub{font-size:.72rem;color:var(--ink-l);}
+.toggle-row{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.tog-track{width:42px;height:24px;border-radius:12px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.tog-track.on{background:var(--purple);}
+.tog-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.15);transition:transform .2s;}
+.tog-track.on .tog-thumb{transform:translateX(18px);}
+.tog-lbl{font-size:.875rem;color:var(--ink);}
+.sp-divider{height:1px;background:var(--border);margin:20px 0;}
+.test-btn{width:100%;height:42px;border-radius:12px;background:var(--cream-d);border:1px solid var(--border);color:var(--ink-m);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.test-btn:hover{background:var(--cream-dd);color:var(--ink);}
+.conn-ok{color:var(--green);background:var(--green-pale);border:1px solid rgba(22,163,74,.2);border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:600;margin-top:8px;display:none;}
+.conn-err{color:#b91c1c;background:rgba(185,28,28,.06);border:1px solid rgba(185,28,28,.15);border-radius:10px;padding:8px 12px;font-size:.78rem;font-weight:600;margin-top:8px;display:none;}
+</style>
+
+<div class="sp-overlay" id="spOverlay"></div>
+<div class="sp" id="sp">
+  <div class="sp-head">
+    <span class="sp-title">Settings</span>
+    <button class="sp-close" id="spClose" aria-label="Close settings">✕</button>
+  </div>
+  <div class="sp-body">
+    <div class="sp-group">
+      <label class="sp-lbl" for="apiIn">Backend API URL</label>
+      <input id="apiIn" class="sp-input" type="text" value="http://localhost:8000" placeholder="http://localhost:8000"/>
+      <p class="sp-hint">FastAPI server address. Saved automatically.</p>
+    </div>
+    <div class="sp-group">
+      <label class="sp-lbl" for="defCtx">Default Context</label>
+      <select id="defCtx" class="sp-select">
+        <option value="general">✦ General</option>
+        <option value="email">📧 Email</option>
+        <option value="document">📄 Document</option>
+        <option value="note">📝 Note</option>
+        <option value="chat">💬 Chat</option>
+        <option value="code">💻 Code</option>
+      </select>
+    </div>
+    <div class="sp-group">
+      <label class="sp-lbl">Polish Mode</label>
+      <label class="radio-row">
+        <input type="radio" name="polishMode" value="websocket" checked/>
+        <div><div class="radio-title">Streaming (WebSocket)</div><div class="radio-sub">Watch text appear in real-time</div></div>
+      </label>
+      <label class="radio-row">
+        <input type="radio" name="polishMode" value="rest"/>
+        <div><div class="radio-title">REST API</div><div class="radio-sub">Wait for complete response</div></div>
+      </label>
+    </div>
+    <div class="sp-group">
+      <label class="sp-lbl">Auto-Polish</label>
+      <label class="toggle-row">
+        <div class="tog-track on" id="togTrack" onclick="toggleAutoPolish()">
+          <div class="tog-thumb"></div>
+        </div>
+        <span class="tog-lbl">Automatically polish after transcription</span>
+      </label>
+      <input type="checkbox" id="autoPolishCb" checked style="display:none;"/>
+    </div>
+    <div class="sp-divider"></div>
+    <div class="sp-group">
+      <label class="sp-lbl">Backend Health</label>
+      <button class="test-btn" id="testConnBtn">Test Connection</button>
+      <div class="conn-ok" id="connOk">✓ Connected successfully</div>
+      <div class="conn-err" id="connErr">✗ Could not connect — is the backend running?</div>
+    </div>
+    <div class="sp-group">
+      <label class="sp-lbl">About</label>
+      <p style="font-size:.78rem;color:var(--ink-m);line-height:1.65;">Flow uses Groq Whisper Large v3 for transcription and LLaMA 3.1 8B for AI polishing. Built by <strong>Sujit Sadalage</strong>.<br/><a href="https://console.groq.com" target="_blank" rel="noopener" style="color:var(--purple);">Get free Groq API key →</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<style>
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:var(--r);display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;font-family:'Inter',sans-serif;opacity:0;pointer-events:none;z-index:999;transition:all .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toastIcon">✓</span>
+  <span id="toastMsg">Copied!</span>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   FLOW APP — Complete JavaScript
+   Built by Sujit Sadalage
+   ════════════════════════════════════ */
+
+// ── State ──────────────────────────────────────
+function detectApi() {
+  const s = localStorage.getItem('flow_api');
+  if (s) return s;
+  return window.location.protocol === 'file:' ? 'http://localhost:8000' : window.location.origin;
+}
+
+const S = {
+  recording: false,
+  processing: false,
+  ctrlDown: false,
+  mediaRecorder: null,
+  chunks: [],
+  timerInterval: null,
+  timerSec: 0,
+  api: detectApi(),
+  autoPolish: localStorage.getItem('flow_autoPolish') !== 'false',
+  polishMode: localStorage.getItem('flow_polishMode') || 'websocket',
+  history: JSON.parse(localStorage.getItem('flow_history') || '[]'),
+};
+
+// ── DOM ─────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const micBtn    = $('micBtn');
+const stBadge   = $('stBadge');
+const stDot     = $('stDot');
+const stText    = $('stText');
+const wvf       = $('wvf');
+const ring1     = $('ring1');
+const ring2     = $('ring2');
+const recTimer  = $('recTimer');
+const timerDisp = $('timerDisp');
+const outTa     = $('outTa');
+const rawBox    = $('rawBox');
+const rawTxt    = $('rawTxt');
+const aiBadge   = $('aiBadge');
+const spinner   = $('spinner');
+const copyBtn   = $('copyBtn');
+const clearBtn  = $('clearBtn');
+const charCt    = $('charCt');
+const errMsg    = $('errMsg');
+const histList  = $('histList');
+const apiIn     = $('apiIn');
+const ctxSel    = $('ctxSel');
+const defCtx    = $('defCtx');
+const autoPolishCb = $('autoPolishCb');
+const togTrack  = $('togTrack');
+const testConnBtn = $('testConnBtn');
+const connOk    = $('connOk');
+const connErr   = $('connErr');
+
+// ── Init ────────────────────────────────────────
+function init() {
+  if (apiIn) apiIn.value = S.api;
+  if (autoPolishCb) autoPolishCb.checked = S.autoPolish;
+  if (togTrack) togTrack.classList.toggle('on', S.autoPolish);
+  const ctx = localStorage.getItem('flow_context') || 'general';
+  if (ctxSel) ctxSel.value = ctx;
+  if (defCtx) defCtx.value = ctx;
+  const pm = S.polishMode;
+  document.querySelectorAll('input[name="polishMode"]').forEach(r => { r.checked = r.value === pm; });
+  renderHistory();
+  checkBackend();
+  setInterval(checkBackend, 20000);
+}
+
+// ── Settings panel ──────────────────────────────
+const sp        = $('sp');
+const spOverlay = $('spOverlay');
+const spClose   = $('spClose');
+const settingsBtn = $('settingsBtn');
+
+function openSP() { sp.classList.add('open'); spOverlay.classList.add('open'); }
+function closeSP() { sp.classList.remove('open'); spOverlay.classList.remove('open'); connOk.style.display = 'none'; connErr.style.display = 'none'; }
+if (settingsBtn) settingsBtn.addEventListener('click', openSP);
+if (spClose) spClose.addEventListener('click', closeSP);
+if (spOverlay) spOverlay.addEventListener('click', closeSP);
+
+if (apiIn) apiIn.addEventListener('change', () => {
+  S.api = apiIn.value.trim();
+  localStorage.setItem('flow_api', S.api);
+});
+if (defCtx) defCtx.addEventListener('change', () => {
+  if (ctxSel) ctxSel.value = defCtx.value;
+  localStorage.setItem('flow_context', defCtx.value);
+});
+if (ctxSel) ctxSel.addEventListener('change', () => {
+  localStorage.setItem('flow_context', ctxSel.value);
+  if (defCtx) defCtx.value = ctxSel.value;
+});
+document.querySelectorAll('input[name="polishMode"]').forEach(r => {
+  r.addEventListener('change', () => { S.polishMode = r.value; localStorage.setItem('flow_polishMode', r.value); });
+});
+
+function toggleAutoPolish() {
+  S.autoPolish = !S.autoPolish;
+  if (autoPolishCb) autoPolishCb.checked = S.autoPolish;
+  if (togTrack) togTrack.classList.toggle('on', S.autoPolish);
+  localStorage.setItem('flow_autoPolish', S.autoPolish);
+}
+
+if (testConnBtn) testConnBtn.addEventListener('click', async () => {
+  testConnBtn.textContent = 'Testing…'; testConnBtn.disabled = true;
+  try {
+    const r = await fetch(S.api + '/health', { signal: AbortSignal.timeout(4000) });
+    if (r.ok) { connOk.style.display = 'block'; connErr.style.display = 'none'; }
+    else throw new Error();
+  } catch { connOk.style.display = 'none'; connErr.style.display = 'block'; }
+  testConnBtn.textContent = 'Test Connection'; testConnBtn.disabled = false;
+});
+
+// ── Backend health ──────────────────────────────
+async function checkBackend() {
+  const dot = $('beDot'), stat = $('beStatus');
+  try {
+    const r = await fetch(S.api + '/health', { signal: AbortSignal.timeout(3000) });
+    if (r.ok) { dot.style.background = 'var(--green)'; stat.textContent = 'Connected'; stat.style.color = 'var(--green)'; }
+    else throw new Error();
+  } catch { dot.style.background = '#b91c1c'; stat.textContent = 'Offline'; stat.style.color = '#b91c1c'; }
+}
+
+// ── UI state ────────────────────────────────────
+function setIdle(msg) {
+  S.recording = false; S.processing = false;
+  micBtn.classList.remove('rec', 'proc'); micBtn.disabled = false;
+  stBadge.className = 'st-badge'; stDot.classList.remove('pulse');
+  stText.textContent = msg || 'Press & hold Ctrl to record';
+  wvf.classList.remove('show'); recTimer.classList.remove('show');
+  if (ring1) ring1.style.display = 'none'; if (ring2) ring2.style.display = 'none';
+  clearInterval(S.timerInterval); S.timerSec = 0; timerDisp.textContent = '00:00';
+}
+function setRecording() {
+  S.recording = true;
+  micBtn.classList.add('rec'); micBtn.classList.remove('proc');
+  stBadge.className = 'st-badge rec'; stDot.classList.add('pulse');
+  stText.textContent = 'Recording…';
+  wvf.classList.add('show'); recTimer.classList.add('show');
+  if (ring1) ring1.style.display = 'block'; if (ring2) ring2.style.display = 'block';
+  S.timerSec = 0; timerDisp.textContent = '00:00';
+  S.timerInterval = setInterval(() => {
+    S.timerSec++;
+    const m = String(Math.floor(S.timerSec / 60)).padStart(2,'0');
+    const s = String(S.timerSec % 60).padStart(2,'0');
+    timerDisp.textContent = m + ':' + s;
+  }, 1000);
+}
+function setProcessing(msg) {
+  S.processing = true; S.recording = false;
+  micBtn.classList.remove('rec'); micBtn.classList.add('proc'); micBtn.disabled = true;
+  stBadge.className = 'st-badge proc'; stDot.classList.add('pulse');
+  stText.textContent = msg || 'Processing…';
+  wvf.classList.remove('show'); recTimer.classList.remove('show');
+  if (ring1) ring1.style.display = 'none'; if (ring2) ring2.style.display = 'none';
+  clearInterval(S.timerInterval);
+  spinner.classList.add('show');
+}
+
+// ── Recording ───────────────────────────────────
+async function startRecording() {
+  if (S.recording || S.processing) return;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    S.chunks = [];
+    const mime = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus'
+                 : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : '';
+    S.mediaRecorder = new MediaRecorder(stream, mime ? { mimeType: mime } : {});
+    S.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) S.chunks.push(e.data); };
+    S.mediaRecorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); processAudio(); };
+    S.mediaRecorder.start(100);
+    setRecording();
+  } catch (err) {
+    showErr('Microphone access denied. Please allow microphone permissions.');
+  }
+}
+
+function stopRecording() {
+  if (!S.recording || !S.mediaRecorder) return;
+  S.recording = false;
+  if (S.mediaRecorder.state !== 'inactive') S.mediaRecorder.stop();
+  clearInterval(S.timerInterval);
+  setProcessing('Transcribing…');
+}
+
+// ── Process audio ───────────────────────────────
+async function processAudio() {
+  hideErr();
+  if (!S.chunks.length) { setIdle(); return; }
+  const mime = S.mediaRecorder.mimeType || 'audio/webm';
+  const blob = new Blob(S.chunks, { type: mime });
+  if (blob.size < 800) { setIdle(); showErr('Recording too short. Hold the key a bit longer.'); return; }
+
+  const ctx = ctxSel ? ctxSel.value : 'general';
+  try {
+    // 1. Transcribe
+    const fd = new FormData();
+    fd.append('audio', blob, 'audio.' + (mime.includes('webm') ? 'webm' : 'wav'));
+    const tr = await fetch(S.api + '/api/transcribe', { method: 'POST', body: fd, signal: AbortSignal.timeout(30000) });
+    if (!tr.ok) throw new Error('Transcribe HTTP ' + tr.status);
+    const td = await tr.json();
+    if (!td.success) throw new Error(td.error || 'Transcription failed');
+    const raw = (td.text || '').trim();
+    if (!raw) { setIdle(); showErr('No speech detected. Try speaking louder.'); return; }
+
+    rawBox.style.display = 'block'; rawTxt.textContent = raw;
+
+    if (!S.autoPolish) {
+      outTa.value = raw; updateCharCount(); copyBtn.style.display = 'inline-flex';
+      setIdle('Done'); addHistory(raw, raw, ctx); showToast('Transcribed!', '✓'); return;
+    }
+
+    // 2. Polish
+    if (S.polishMode === 'websocket') {
+      await polishWS(raw, ctx);
+    } else {
+      await polishREST(raw, ctx);
+    }
+  } catch (err) {
+    spinner.classList.remove('show');
+    const msg = err.name === 'TimeoutError' ? 'Request timed out. Is the backend running?' :
+                err.message.includes('fetch') ? 'Cannot reach backend. Run: uvicorn main:app --reload' :
+                err.message;
+    showErr(msg); setIdle();
+  }
+}
+
+async function polishREST(raw, ctx) {
+  setProcessing('AI polishing…');
+  try {
+    const fd = new FormData(); fd.append('text', raw); fd.append('context', ctx);
+    const r = await fetch(S.api + '/api/polish', { method: 'POST', body: fd, signal: AbortSignal.timeout(30000) });
+    const d = await r.json();
+    const polished = (d.polished || raw).trim();
+    outTa.value = polished; outTa.classList.add('has-content');
+    updateCharCount(); aiBadge.style.display = 'inline-flex';
+    copyBtn.style.display = 'inline-flex'; spinner.classList.remove('show');
+    addHistory(raw, polished, ctx); setIdle('Done ✨'); showToast('✨ Polished!', '✨');
+  } catch { spinner.classList.remove('show'); outTa.value = raw; updateCharCount(); copyBtn.style.display = 'inline-flex'; addHistory(raw, raw, ctx); setIdle('Done'); }
+}
+
+async function polishWS(raw, ctx) {
+  setProcessing('AI writing…');
+  return new Promise(resolve => {
+    try {
+      const wsUrl = S.api.replace('http://', 'ws://').replace('https://', 'wss://');
+      const ws = new WebSocket(wsUrl + '/ws/stream');
+      let full = ''; let started = false;
+      ws.onopen = () => ws.send(JSON.stringify({ text: raw, context: ctx }));
+      ws.onmessage = e => {
+        const m = JSON.parse(e.data);
+        if (m.type === 'start') { started = true; outTa.value = ''; setProcessing('AI writing…'); }
+        else if (m.type === 'token') {
+          full += m.token; outTa.value = full;
+          outTa.classList.add('has-content'); updateCharCount();
+          outTa.scrollTop = outTa.scrollHeight;
+        } else if (m.type === 'done') {
+          const p = (m.full_text || full).trim(); outTa.value = p;
+          outTa.classList.add('has-content'); updateCharCount();
+          aiBadge.style.display = 'inline-flex'; copyBtn.style.display = 'inline-flex';
+          spinner.classList.remove('show'); addHistory(raw, p, ctx);
+          setIdle('Done ✨'); showToast('✨ Polished!', '✨'); ws.close(); resolve();
+        }
+      };
+      ws.onerror = () => { ws.close(); polishREST(raw, ctx).then(resolve); };
+      ws.onclose = () => { if (!started) polishREST(raw, ctx).then(resolve); };
+      setTimeout(() => { if (ws.readyState !== WebSocket.CLOSED) { ws.close(); if (!started) polishREST(raw, ctx).then(resolve); }}, 30000);
+    } catch { polishREST(raw, ctx).then(resolve); }
+  });
+}
+
+// ── Mic button interactions ─────────────────────
+micBtn.addEventListener('mousedown', () => { if (!S.processing) startRecording(); });
+micBtn.addEventListener('mouseup',   () => { if (S.recording) stopRecording(); });
+micBtn.addEventListener('mouseleave',() => { if (S.recording) stopRecording(); });
+micBtn.addEventListener('touchstart', e => { e.preventDefault(); if (!S.processing) startRecording(); });
+micBtn.addEventListener('touchend',   e => { e.preventDefault(); if (S.recording) stopRecording(); });
+
+// ── Keyboard ─────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Control') && !S.ctrlDown && !S.processing) { S.ctrlDown = true; startRecording(); }
+  if (e.key === 'Escape') { if (S.recording) stopRecording(); else { clearOutput(); closeSP(); } }
+});
+document.addEventListener('keyup', e => {
+  if (e.key === 'Control') { S.ctrlDown = false; if (S.recording) stopRecording(); }
+});
+
+// ── Copy, Clear, CharCount ───────────────────────
+if (copyBtn) copyBtn.addEventListener('click', () => {
+  const t = outTa.value; if (!t) return;
+  navigator.clipboard.writeText(t).then(() => showToast('Copied!', '✓')).catch(() => { outTa.select(); document.execCommand('copy'); showToast('Copied!', '✓'); });
+});
+if (clearBtn) clearBtn.addEventListener('click', clearOutput);
+if (outTa) outTa.addEventListener('input', updateCharCount);
+
+function clearOutput() {
+  outTa.value = ''; outTa.classList.remove('has-content');
+  rawBox.style.display = 'none'; rawTxt.textContent = '';
+  aiBadge.style.display = 'none'; copyBtn.style.display = 'none';
+  hideErr(); updateCharCount(); setIdle();
+}
+function updateCharCount() {
+  const n = outTa.value.length;
+  charCt.textContent = n.toLocaleString() + ' character' + (n !== 1 ? 's' : '');
+  outTa.classList.toggle('has-content', n > 0);
+}
+
+// ── Toast ────────────────────────────────────────
+let toastT = null;
+function showToast(msg, icon) {
+  $('toastMsg').textContent = msg; $('toastIcon').textContent = icon || '✓';
+  $('toast').classList.add('show'); clearTimeout(toastT);
+  toastT = setTimeout(() => $('toast').classList.remove('show'), 2400);
+}
+function showErr(msg) { errMsg.textContent = msg; errMsg.style.display = 'block'; }
+function hideErr() { errMsg.style.display = 'none'; errMsg.textContent = ''; }
+
+// ── History ──────────────────────────────────────
+function addHistory(raw, polished, ctx) {
+  const item = { id: Date.now(), raw, polished, ctx, time: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) };
+  S.history.unshift(item);
+  if (S.history.length > 12) S.history.pop();
+  localStorage.setItem('flow_history', JSON.stringify(S.history));
+  renderHistory();
+}
+function renderHistory() {
+  if (!histList) return;
+  if (!S.history.length) { histList.innerHTML = '<p class="hist-empty">No recordings yet</p>'; return; }
+  histList.innerHTML = S.history.slice(0, 8).map(h => `
+    <div class="hist-item" onclick="loadHistory(${h.id})">
+      <div class="hist-prev">${esc(h.polished || h.raw)}</div>
+      <div class="hist-meta"><span>${h.ctx}</span><span>${h.time}</span></div>
+    </div>`).join('');
+}
+function loadHistory(id) {
+  const h = S.history.find(x => x.id === id); if (!h) return;
+  outTa.value = h.polished || h.raw; updateCharCount();
+  if (h.raw !== h.polished) { rawBox.style.display = 'block'; rawTxt.textContent = h.raw; aiBadge.style.display = 'inline-flex'; }
+  copyBtn.style.display = 'inline-flex';
+}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').slice(0,100); }
+
+const clhBtn = $('clearHistBtn');
+if (clhBtn) clhBtn.addEventListener('click', () => { S.history = []; localStorage.setItem('flow_history','[]'); renderHistory(); });
+
+// ── Boot ──────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

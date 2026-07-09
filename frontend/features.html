@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Flow — Features</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400;1,9..144,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{--cream:#F3EFE6;--cream-dark:#EDE8DE;--ink:#1C1917;--ink-muted:#6B6560;--ink-light:#9C9590;--purple:#7B5EA7;--green:#16a34a;--orange:#E87D2E;--border:#DDD8CF;--white:#FFFFFF;--r:999px;--ease:cubic-bezier(.22,.61,.36,1);}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.serif{font-family:'Cormorant Garamond',Georgia,serif;}
+::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:var(--cream);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rv.on{opacity:1;transform:none;}
+.rvl{opacity:0;transform:translateX(-36px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rvl.on{opacity:1;transform:none;}
+.rvr{opacity:0;transform:translateX(36px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rvr.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s!important;}.d2{transition-delay:.16s!important;}.d3{transition-delay:.24s!important;}.d4{transition-delay:.32s!important;}
+/* NAV */
+.navbar{position:sticky;top:14px;z-index:200;padding:0 20px;display:flex;justify-content:center;pointer-events:none;}
+.nav-pill{max-width:940px;width:100%;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 4px 24px rgba(28,25,23,.08);display:flex;align-items:center;justify-content:space-between;padding:8px 8px 8px 18px;pointer-events:all;}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.nav-bars{display:flex;align-items:flex-end;gap:3px;height:18px;}
+.nb{background:var(--ink);border-radius:3px;width:5px;}
+.nav-name{font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.nav-links{display:flex;gap:2px;}
+.nav-a{font-size:.82rem;font-weight:500;color:var(--ink-muted);text-decoration:none;padding:7px 13px;border-radius:var(--r);transition:all .2s;}
+.nav-a:hover,.nav-a.active{color:var(--ink);background:var(--cream);}
+.btn{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 20px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;border:none;transition:all .2s;}
+.btn-p{background:var(--purple);color:#fff;} .btn-p:hover{background:#6B4E97;transform:translateY(-1px);}
+@media(max-width:760px){.nav-links{display:none;}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-pill">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-bars"><div class="nb" style="height:10px;"></div><div class="nb" style="height:16px;"></div><div class="nb" style="height:8px;"></div><div class="nb" style="height:13px;"></div></div>
+      <span class="nav-name">Flow</span>
+    </a>
+    <div class="nav-links">
+      <a href="features.html" class="nav-a active">Product</a>
+      <a href="use-cases.html" class="nav-a">Use Cases</a>
+      <a href="app.html" class="nav-a">App</a>
+      <a href="about.html" class="nav-a">About</a>
+      <a href="contact.html" class="nav-a">Contact</a>
+    </div>
+    <a href="app.html" class="btn btn-p">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+      Download
+    </a>
+  </div>
+</nav>
+
+<style>
+.page-hero{padding:120px 24px 80px;text-align:center;}
+.page-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:var(--ink);line-height:1.0;margin-bottom:16px;}
+.page-hero h1 em{font-style:italic;color:var(--purple);}
+.page-hero p{font-size:1.05rem;color:var(--ink-muted);max-width:500px;margin:0 auto;line-height:1.7;}
+.features-grid{max-width:1080px;margin:0 auto;padding:0 24px 120px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media(max-width:860px){.features-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:540px){.features-grid{grid-template-columns:1fr;}}
+.fg{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:36px 30px;transition:transform .35s,box-shadow .35s;}
+.fg:hover{transform:translateY(-5px);box-shadow:0 18px 52px rgba(28,25,23,.1);}
+.fg-icon{width:52px;height:52px;border-radius:14px;background:var(--cream-dark);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:all .3s;}
+.fg:hover .fg-icon{background:var(--purple);border-color:var(--purple);}
+.fg:hover .fg-icon svg{stroke:#fff;}
+.fg-icon svg{stroke:var(--ink-muted);transition:stroke .3s;}
+.fg-title{font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.fg-desc{font-size:.875rem;color:var(--ink-muted);line-height:1.72;}
+/* Wide feature rows */
+.feat-row{max-width:1080px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+@media(max-width:800px){.feat-row{grid-template-columns:1fr;gap:40px;padding-bottom:60px;}}
+.feat-row:nth-child(even){direction:rtl;}
+.feat-row:nth-child(even) > *{direction:ltr;}
+.feat-row-text h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:12px;}
+.feat-row-text h2 em{font-style:italic;color:var(--purple);}
+.feat-row-text p{font-size:.9rem;color:var(--ink-muted);line-height:1.75;margin-bottom:20px;}
+.feat-visual{background:var(--white);border:1px solid var(--border);border-radius:22px;overflow:hidden;box-shadow:0 16px 56px rgba(28,25,23,.1);}
+.fv-bar{display:flex;align-items:center;gap:6px;padding:11px 16px;border-bottom:1px solid var(--border);background:#f9f7f4;}
+.fv-dot{width:9px;height:9px;border-radius:50%;}
+.fv-body{padding:20px 24px;}
+.fv-line{height:4px;background:var(--cream-dark);border-radius:3px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+.dict-row:last-child{border-bottom:none;}
+.dict-tag{padding:3px 10px;border-radius:var(--r);background:rgba(123,94,167,.08);border:1px solid rgba(123,94,167,.15);font-size:.72rem;font-weight:600;color:var(--purple);}
+.snip-row{padding:10px 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+.snip-row:last-child{border-bottom:none;}
+.snip-trigger{font-weight:700;color:var(--ink);margin-bottom:2px;}
+.snip-output{color:var(--ink-muted);}
+.lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.lang-chip{padding:6px 10px;background:var(--cream-dark);border-radius:8px;text-align:center;font-size:.75rem;font-weight:600;color:var(--ink-muted);}
+.section-divider{height:1px;background:var(--border);max-width:1080px;margin:0 auto 0;padding:0 24px;}
+</style>
+
+<section class="page-hero">
+  <p style="font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;" class="rv">Everything in Flow</p>
+  <h1 class="rv" style="transition-delay:.08s;">Every feature built for <em>speed</em></h1>
+  <p class="rv" style="transition-delay:.16s;">Voice dictation that actually works — from transcription to AI polishing to global hotkeys.</p>
+</section>
+
+<div class="features-grid" id="features">
+  <div class="fg rv d1">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+    <div class="fg-title">Global Hotkey</div>
+    <div class="fg-desc">Hold a key anywhere on your system — Gmail, Slack, VS Code, Word. Flow activates without switching windows.</div>
+  </div>
+  <div class="fg rv d2">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+    <div class="fg-title">AI Auto Edits</div>
+    <div class="fg-desc" id="ai">Filler words, false starts, and repetition are stripped automatically. Output is clean and context-aware.</div>
+  </div>
+  <div class="fg rv d3">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+    <div class="fg-title">Personal Dictionary</div>
+    <div class="fg-desc">Flow learns your unique words, names, and abbreviations so your vocabulary is always recognized correctly.</div>
+  </div>
+  <div class="fg rv d2">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <div class="fg-title">Snippet Library</div>
+    <div class="fg-desc">Speak a trigger phrase to insert full blocks of pre-written text — calendly links, FAQ answers, signatures.</div>
+  </div>
+  <div class="fg rv d3">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+    <div class="fg-title" id="languages">100+ Languages</div>
+    <div class="fg-desc">Auto-detects the language you're speaking — English, Spanish, Hindi, French, and 96 more. Switch mid-sentence.</div>
+  </div>
+  <div class="fg rv d4">
+    <div class="fg-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+    <div class="fg-title">Works Everywhere</div>
+    <div class="fg-desc">Mac, Windows, iPhone, Android — and every app on each platform. If there's a text field, Flow works there.</div>
+  </div>
+</div>
+
+<div style="background:var(--cream-dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:100px 24px;">
+  <div class="feat-row">
+    <div class="feat-row-text rvl">
+      <p style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;">Personal Dictionary</p>
+      <h2>Your words, <em>always right</em></h2>
+      <p>Flow learns the names, brands, and jargon unique to your world — so Nguyen, SaaS, and Caltrain are always transcribed exactly right.</p>
+      <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 22px;border-radius:var(--r);background:var(--purple);color:#fff;font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#6B4E97'" onmouseout="this.style.background='var(--purple)'">Try it now →</a>
+    </div>
+    <div class="feat-visual rvr">
+      <div class="fv-bar"><div class="fv-dot" style="background:#ff5f57;"></div><div class="fv-dot" style="background:#febc2e;"></div><div class="fv-dot" style="background:#28c840;"></div><span style="margin-left:8px;font-size:.75rem;color:var(--ink-light);">Your Dictionary</span></div>
+      <div class="fv-body">
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">Robyn</span><span class="dict-tag">Name</span></div>
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">Viktor</span><span class="dict-tag">Name</span></div>
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">SaaS</span><span class="dict-tag">Tech</span></div>
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">Caltrain</span><span class="dict-tag">Place</span></div>
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">Nguyen</span><span class="dict-tag">Name</span></div>
+        <div class="dict-row"><span style="flex:1;color:var(--ink);font-weight:600;">Leong</span><span class="dict-tag">Name</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="feat-row">
+    <div class="feat-row-text rvr">
+      <p style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Snippet Library</p>
+      <h2>Speak once, <em>insert anything</em></h2>
+      <p>Say "calendar" and Flow inserts your full Calendly link. Say "FAQ" and it drops in your support answer. Speak a cue, get the full formatted text.</p>
+      <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:44px;padding:0 22px;border-radius:var(--r);background:var(--ink);color:#fff;font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='var(--ink)'">Start using Flow →</a>
+    </div>
+    <div class="feat-visual rvl">
+      <div class="fv-bar"><div class="fv-dot" style="background:#ff5f57;"></div><div class="fv-dot" style="background:#febc2e;"></div><div class="fv-dot" style="background:#28c840;"></div><span style="margin-left:8px;font-size:.75rem;color:var(--ink-light);">Your Snippets</span></div>
+      <div class="fv-body">
+        <div class="snip-row"><div class="snip-trigger">📅 Calendar</div><div class="snip-output">You can book a 30-min call: calendly.com/flow</div></div>
+        <div class="snip-row"><div class="snip-trigger">🕐 Hours</div><div class="snip-output">We're available Mon–Fri, 9am–6pm IST.</div></div>
+        <div class="snip-row"><div class="snip-trigger">❓ FAQ</div><div class="snip-output">Here are answers to our most common questions…</div></div>
+        <div class="snip-row"><div class="snip-trigger">🏠 Address</div><div class="snip-output">Pune, Maharashtra, India 411001</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="feat-row">
+    <div class="feat-row-text rvl">
+      <p style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Languages</p>
+      <h2>Speak any language, <em>anywhere</em></h2>
+      <p>Flow auto-detects and transcribes in 100+ languages — letting you move between them just like you do in real life, without any manual switching.</p>
+    </div>
+    <div class="feat-visual rvr">
+      <div class="fv-bar"><div class="fv-dot" style="background:#ff5f57;"></div><div class="fv-dot" style="background:#febc2e;"></div><div class="fv-dot" style="background:#28c840;"></div><span style="margin-left:8px;font-size:.75rem;color:var(--ink-light);">100+ Languages</span></div>
+      <div class="fv-body">
+        <div class="lang-grid">
+          <div class="lang-chip">English</div><div class="lang-chip">Spanish</div>
+          <div class="lang-chip">Hindi</div><div class="lang-chip">French</div>
+          <div class="lang-chip">Arabic</div><div class="lang-chip">Mandarin</div>
+          <div class="lang-chip">German</div><div class="lang-chip">Japanese</div>
+          <div class="lang-chip">Portuguese</div><div class="lang-chip">Italian</div>
+          <div class="lang-chip">Korean</div><div class="lang-chip" style="background:var(--purple);color:#fff;">+89 more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="padding:80px 24px;text-align:center;border-top:1px solid var(--border);">
+  <h2 class="serif rv" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:700;color:var(--ink);margin-bottom:14px;">Ready to try <em style="color:var(--purple);">Flow</em>?</h2>
+  <p class="rv" style="color:var(--ink-muted);margin-bottom:28px;font-size:.95rem;transition-delay:.1s;">Built by Sujit Sadalage. Free to try, no credit card required.</p>
+  <div class="rv" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;transition-delay:.18s;">
+    <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:52px;padding:0 32px;border-radius:var(--r);background:var(--purple);color:#fff;font-size:.95rem;font-weight:600;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#6B4E97'" onmouseout="this.style.background='var(--purple)'">Download for Windows</a>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:7px;height:52px;padding:0 32px;border-radius:var(--r);background:transparent;color:var(--ink);border:1.5px solid var(--ink);font-size:.95rem;font-weight:600;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='var(--ink)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='var(--ink)'">Back to Home</a>
+  </div>
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:24px;text-align:center;">
+  <p style="font-size:.78rem;color:var(--ink-light);">© 2025 Flow · Built by <strong>Sujit Sadalage</strong> · <a href="index.html" style="color:var(--ink-light);">Home</a> · <a href="contact.html" style="color:var(--ink-light);">Contact</a></p>
+</footer>
+
+<script>
+const ro = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); ro.unobserve(e.target); }}), {threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
