@@ -21,19 +21,25 @@ if not exist "backend\.env" (
 )
 
 REM ── Install backend deps ───────────────────────
-echo  [1/3] Installing backend dependencies...
+echo  [1/4] Installing backend dependencies...
 cd backend
 pip install -r requirements.txt -q
 cd ..
 
 REM ── Install hotkey service deps ────────────────
-echo  [2/3] Installing hotkey service dependencies...
+echo  [2/4] Installing hotkey service dependencies...
 cd hotkey_service
 pip install -r requirements.txt -q
 cd ..
 
+REM ── Install Electron deps ──────────────────────
+echo  [3/4] Installing Electron dependencies...
+cd electron
+npm install --silent
+cd ..
+
 echo.
-echo  [3/3] Starting everything...
+echo  [4/4] Starting everything...
 echo.
 
 REM ── Start backend in a new window ─────────────
@@ -45,9 +51,9 @@ timeout /t 3 /nobreak >nul
 REM ── Start hotkey service in a new window ──────
 start "Flow Hotkey Service" cmd /k "cd hotkey_service && python service.py"
 
-REM ── Open browser ──────────────────────────────
+REM ── Start Electron overlay ────────────────────
 timeout /t 2 /nobreak >nul
-start "" "http://localhost:8000"
+start "Flow Overlay" cmd /k "cd electron && npm start"
 
 echo.
 echo  ============================================
@@ -57,8 +63,9 @@ echo   Web App  :  http://localhost:8000
 echo   Backend  :  http://localhost:8000/health
 echo   API Docs :  http://localhost:8000/docs
 echo.
-echo   Global hotkey: Hold Ctrl anywhere to record
-echo   Works in: Gmail, Slack, VS Code, Notepad...
+echo   Overlay  :  Electron floating pill (bottom-right)
+echo   Hotkey   :  Hold Ctrl anywhere to record
+echo   Works in :  Gmail, Slack, VS Code, Notepad...
 echo  ============================================
 echo.
 pause

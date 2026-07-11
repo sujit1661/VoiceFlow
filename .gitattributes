@@ -1,0 +1,8 @@
+# Force LF for shell scripts (CRLF breaks them on Linux/Mac)
+*.sh text eol=lf
+
+# Windows batch files use CRLF
+*.bat text eol=crlf
+
+# Everything else — auto-detect
+* text=auto
