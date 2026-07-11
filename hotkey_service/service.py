@@ -2,8 +2,9 @@
 Flow — Global Hotkey Service
 Built by Sujit Sadalage
 
-Hold Ctrl → records mic → transcribes → AI polishes → auto-types.
-Shows a floating HTML overlay (overlay.html) via a local WebSocket on port 8765.
+Hold Ctrl → records mic → transcribes → AI polishes → real-time auto-types.
+Overlay is handled by Electron (no browser tab, no tkinter).
+Broadcasts state via WebSocket on port 8765.
 """
 
 import threading
@@ -13,7 +14,6 @@ import tempfile
 import wave
 import json
 import os
-import subprocess
 import sys
 import requests
 import pyaudio
@@ -28,28 +28,26 @@ except ImportError:
 
 # ── Config ────────────────────────────────────────────────────────────────────
 API_BASE    = os.getenv("FLOW_API",     "http://localhost:8000")
+WS_API_BASE = API_BASE.replace("http://", "ws://").replace("https://", "wss://")
 CONTEXT     = os.getenv("FLOW_CONTEXT", "general")
 WS_PORT     = 8765          # overlay WebSocket port
-CHUNK       = 1024
-FORMAT      = pyaudio.paInt16
-CHANNELS    = 1
-RATE        = 16000
 
-OVERLAY_HTML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "overlay.html")
-# Derive overlay URL from API_BASE — always served by the same backend
-OVERLAY_URL  = API_BASE.rstrip("/") + "/overlay.html"
+CHUNK    = 1024
+FORMAT   = pyaudio.paInt16
+CHANNELS = 1
+RATE     = 16000
 
 # ═══════════════════════════════════════════════════════════════════════════════
-#  WEBSOCKET BROADCAST SERVER  (overlay ↔ service)
+#  WEBSOCKET BROADCAST SERVER  (service → Electron overlay)
 # ═══════════════════════════════════════════════════════════════════════════════
-_clients:  set  = set()
+_clients:  set = set()
 _ws_loop: asyncio.AbstractEventLoop | None = None
 
 
 async def _ws_handler(ws):
     _clients.add(ws)
     try:
-        async for _ in ws:     # keep connection alive; we only send, not receive
+        async for _ in ws:
             pass
     except Exception:
         pass
@@ -63,7 +61,6 @@ async def _run_server():
 
 
 def _start_ws_server():
-    """Run the asyncio loop + WebSocket server in a background thread."""
     global _ws_loop
     _ws_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(_ws_loop)
@@ -71,7 +68,7 @@ def _start_ws_server():
 
 
 def broadcast(state: str, text: str = ""):
-    """Thread-safe: send a JSON message to all connected overlay clients."""
+    """Thread-safe broadcast to all connected Electron overlay clients."""
     if not _ws_loop or not _clients:
         return
     msg = json.dumps({"state": state, "text": text})
@@ -86,53 +83,6 @@ def broadcast(state: str, text: str = ""):
         _clients.difference_update(dead)
 
     asyncio.run_coroutine_threadsafe(_send(), _ws_loop)
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
-#  OPEN OVERLAY HTML WINDOW
-# ═══════════════════════════════════════════════════════════════════════════════
-def open_overlay():
-    """Open overlay.html served by the backend via HTTP — works reliably cross-platform."""
-    url = OVERLAY_URL
-    print(f"  🖥️  Opening overlay: {url}")
-
-    if sys.platform == "win32":
-        # Try Chrome/Edge in --app mode first (borderless popup)
-        browsers = [
-            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-            r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        ]
-        for b in browsers:
-            if os.path.isfile(b):
-                subprocess.Popen([
-                    b,
-                    f"--app={url}",
-                    "--window-size=300,90",
-                    "--no-first-run",
-                    "--no-default-browser-check",
-                    "--disable-extensions",
-                    "--disable-infobars",
-                ])
-                return
-        # Fallback: default browser (will open as normal tab)
-        import webbrowser
-        webbrowser.open(url)
-
-    elif sys.platform == "darwin":
-        # Try Chrome --app mode on Mac
-        chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        if os.path.isfile(chrome):
-            subprocess.Popen([chrome, f"--app={url}", "--window-size=300,90"])
-        else:
-            subprocess.Popen(["open", url])
-    else:
-        # Linux
-        try:
-            subprocess.Popen(["google-chrome", f"--app={url}", "--window-size=300,90"])
-        except FileNotFoundError:
-            subprocess.Popen(["xdg-open", url])
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -163,7 +113,7 @@ class FlowService:
 
     # ── Recording ─────────────────────────────────────────────────────────────
     def start_recording(self):
-        self.recording = True
+        self.recording    = True
         self.audio_frames = []
         broadcast("recording")
         print("  🔴 Recording…")
@@ -222,24 +172,21 @@ class FlowService:
 
             print(f"  📝 {raw_text[:70]}{'…' if len(raw_text) > 70 else ''}")
 
-            # 2. Polish ────────────────────────────────────────────────────────
-            broadcast("polishing", "AI polishing text…")
-            print("  ✨ Polishing…")
-            pr = requests.post(
-                f"{API_BASE}/api/polish",
-                data={"text": raw_text, "context": CONTEXT},
-                timeout=30,
-            )
-            polished = pr.json().get("polished", raw_text).strip()
-            print(f"  ✅ {polished[:70]}{'…' if len(polished) > 70 else ''}")
+            # 2. Polish + real-time type via WebSocket stream ──────────────────
+            broadcast("polishing", "AI polishing…")
+            print("  ✨ Polishing + typing in real time…")
 
-            # 3. Type ──────────────────────────────────────────────────────────
-            broadcast("typing", polished[:60] + ("…" if len(polished) > 60 else ""))
-            time.sleep(0.25)
-            _type_text(polished)
+            # Small delay so cursor stays in the target window after Ctrl release
+            time.sleep(0.35)
 
-            broadcast("done", "Done ✨")
-            print("  ✅ Typed!")
+            full_text = self._stream_polish_and_type(raw_text)
+
+            if full_text:
+                broadcast("done", "Done ✨")
+                print(f"  ✅ Typed: {full_text[:60]}{'…' if len(full_text) > 60 else ''}")
+            else:
+                _type_text(raw_text)
+                broadcast("done", "Done ✨")
 
         except requests.exceptions.ConnectionError:
             msg = f"Cannot connect to {API_BASE}"
@@ -253,6 +200,71 @@ class FlowService:
                 os.unlink(tmp_path)
             except Exception:
                 pass
+
+    def _stream_polish_and_type(self, raw_text: str) -> str:
+        """
+        Connect to backend WebSocket, receive tokens in real time,
+        type each token as it arrives, broadcast preview to overlay.
+        Returns the full polished text (empty string on failure).
+        """
+        ws_url = f"{WS_API_BASE}/ws/stream"
+        full   = ""
+
+        try:
+            import websocket   # websocket-client (sync)
+        except ImportError:
+            print("  ℹ️  websocket-client not installed, falling back to REST polish")
+            return self._rest_polish_and_type(raw_text)
+
+        try:
+            ws = websocket.create_connection(ws_url, timeout=30)
+            ws.send(json.dumps({"text": raw_text, "context": CONTEXT}))
+
+            broadcast("typing", "")
+
+            while True:
+                msg = ws.recv()
+                pkt = json.loads(msg)
+                t   = pkt.get("type")
+
+                if t == "start":
+                    continue
+
+                elif t == "token":
+                    token = pkt.get("token", "")
+                    full += token
+                    # Type the token immediately (real-time)
+                    _type_text(token)
+                    # Broadcast last ~40 chars as preview
+                    broadcast("token", full[-40:])
+
+                elif t == "done":
+                    full = pkt.get("full_text", full)
+                    break
+
+                elif t == "error":
+                    print(f"  ❌ Stream error: {pkt.get('message')}")
+                    break
+
+            ws.close()
+            return full
+
+        except Exception as e:
+            print(f"  ⚠️  WebSocket stream failed ({e}), falling back to REST")
+            return self._rest_polish_and_type(raw_text)
+
+    def _rest_polish_and_type(self, raw_text: str) -> str:
+        """Fallback: REST polish then type all at once."""
+        broadcast("polishing", "AI cleaning your text…")
+        pr = requests.post(
+            f"{API_BASE}/api/polish",
+            data={"text": raw_text, "context": CONTEXT},
+            timeout=30,
+        )
+        polished = pr.json().get("polished", raw_text).strip()
+        broadcast("typing", polished[:50])
+        _type_text(polished)
+        return polished
 
     # ── Keyboard handlers ─────────────────────────────────────────────────────
     def on_press(self, key):
@@ -274,7 +286,6 @@ class FlowService:
     def on_release(self, key):
         try:
             if key == keyboard.Key.esc:
-                broadcast("idle", "")
                 print("\n  👋 Stopped.")
                 return False
             if key in (keyboard.Key.ctrl_r, keyboard.Key.ctrl_l):
@@ -296,12 +307,15 @@ class FlowService:
 
 # ── Auto-type helper ──────────────────────────────────────────────────────────
 def _type_text(text: str):
-    """Type text via clipboard paste (handles unicode) or pyautogui fallback."""
+    """Type text via clipboard paste (unicode-safe) or pyautogui fallback."""
+    if not text:
+        return
     try:
         import pyperclip
-        pyperclip.copy(text)
         import pyautogui
+        pyperclip.copy(text)
         pyautogui.hotkey("ctrl", "v")
+        time.sleep(0.02)   # small gap between tokens so paste doesn't merge
     except ImportError:
         try:
             import pyautogui
@@ -317,11 +331,12 @@ if __name__ == "__main__":
     # 1. Start WebSocket broadcast server in background
     ws_thread = threading.Thread(target=_start_ws_server, daemon=True)
     ws_thread.start()
-    time.sleep(0.4)   # let server start
+    time.sleep(0.3)   # let server bind
 
-    # 2. Open overlay HTML in browser popup
-    open_overlay()
+    print("  🖥️  Waiting for Electron overlay to connect…")
+    print("  ▶   Run:  cd electron && npm start")
+    print()
 
-    # 3. Run hotkey listener on main thread
+    # 2. Run hotkey listener on main thread (blocking)
     svc = FlowService()
     svc.run()

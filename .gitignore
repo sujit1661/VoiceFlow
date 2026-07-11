@@ -1,3 +1,6 @@
+on# Electron
+electron/node_modules/
+
 # Environment variables — NEVER commit real keys
 backend/.env
 .env
