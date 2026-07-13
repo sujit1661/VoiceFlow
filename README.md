@@ -239,15 +239,17 @@ Flow provides a complete AI-powered writing workflow.
 
 | Category | Technologies |
 |-----------|-------------|
-| Programming Language | Python |
+| Programming Language | Python, JavaScript |
+| Desktop Framework | Electron |
 | Backend | FastAPI |
 | ASGI Server | Uvicorn |
 | Speech Recognition | Groq Whisper Large v3 |
 | AI Text Polishing | Groq LLaMA 3.1 8B Instant |
 | Frontend | HTML, CSS, JavaScript |
 | Styling | Tailwind CSS |
-| Audio Recording | PyAudio |
-| Keyboard Listener | pynput |
+| Desktop Integration | Electron IPC |
+| Audio Recording | MediaRecorder, PyAudio |
+| Global Hotkeys | Electron GlobalShortcut / pynput |
 | Auto Typing | pyautogui |
 | Environment | python-dotenv |
 
