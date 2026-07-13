@@ -265,6 +265,11 @@ flow/
 │   ├── requirements.txt
 │   └── .env.example
 │
+├──electron
+|   ├── main.js
+|   ├── overlay.html
+|   ├── package.json
+|
 ├── frontend/
 │   ├── index.html
 │   ├── app.html
