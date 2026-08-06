@@ -674,9 +674,6 @@ pip install -r requirements.txt
 python service.py
 ```
 
-<<<<<<< Updated upstream
----
-=======
 | Action | What happens |
 |--------|-------------|
 | Hold **Ctrl** (0.5s) | Recording starts 🔴 (high beep) |
@@ -686,7 +683,7 @@ python service.py
 
 ### Raw vs AI-polished output
 
-By default the service polishes with AI before typing. To type the raw transcript exactly as spoken, set `FLOW_AUTO_POLISH=false` in `backend/.env` or as an environment variable:
+By default the service polishes with AI before typing. To type the raw transcript exactly as spoken, set `FLOW_AUTO_POLISH=false` in `backend/.env`:
 
 ```bash
 # Windows
@@ -697,15 +694,17 @@ FLOW_AUTO_POLISH=false python service.py
 ```
 
 The browser app has the same toggle — **✎ Type Exact** / **✦ Improve with AI** — visible on the mic card.
->>>>>>> Stashed changes
+
+---
 
 ## Hotkeys
 
 | Shortcut | Action |
 |----------|--------|
-| Hold Ctrl | Start Recording |
-| Release Ctrl | Stop Recording |
-| ESC | Exit Service |
+| Hold Ctrl | Start recording |
+| Release Ctrl | Stop + transcribe + type |
+| ESC (while recording) | Cancel recording (nothing typed) |
+| Shift+ESC | Quit the service |
 
 ---
 
@@ -773,9 +772,6 @@ Flow is production-ready and can be deployed to:
 
 ---
 
-<<<<<<< Updated upstream
-## Required Environment Variables
-=======
 ## Docker
 
 The backend (API + frontend) runs in a single container. The hotkey service and Electron overlay still run locally — they need mic access and system keyboard hooks which don't work inside Docker.
@@ -798,15 +794,22 @@ Make sure `backend/.env` exists with your `GROQ_API_KEY` before running.
 
 ---
 
-## Troubleshooting
->>>>>>> Stashed changes
+## Required Environment Variables
 
 ```env
 GROQ_API_KEY=your_key
-
 ENVIRONMENT=production
-
 ALLOWED_ORIGINS=https://yourdomain.com
+
+# Optional: protect /api/* routes with a key (leave blank in dev)
+FLOW_API_KEY=
+
+# Rate limiting (requests per IP per window)
+RATE_LIMIT_REQUESTS=30
+RATE_LIMIT_WINDOW=60
+
+# Hotkey service: set false to type raw transcript without AI polishing
+FLOW_AUTO_POLISH=true
 ```
 
 ---
