@@ -12,11 +12,11 @@
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:var(--cream);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
-.rv{opacity:0;transform:translateY(28px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rv{opacity:1;transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .rv.on{opacity:1;transform:none;}
-.rvl{opacity:0;transform:translateX(-36px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rvl{opacity:1;transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .rvl.on{opacity:1;transform:none;}
-.rvr{opacity:0;transform:translateX(36px);transition:opacity .75s var(--ease),transform .75s var(--ease);}
+.rvr{opacity:1;transition:opacity .75s var(--ease),transform .75s var(--ease);}
 .rvr.on{opacity:1;transform:none;}
 .d1{transition-delay:.08s!important;}.d2{transition-delay:.16s!important;}.d3{transition-delay:.24s!important;}
 .navbar{position:sticky;top:14px;z-index:200;padding:0 20px;display:flex;justify-content:center;pointer-events:none;}
@@ -47,7 +47,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
       <a href="about.html" class="nav-a">About</a>
       <a href="contact.html" class="nav-a">Contact</a>
     </div>
-    <a href="app.html" class="btn-p">
+    <a href="#" onclick="openDownloadModal();return false;" class="btn-p">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
       Download
     </a>
@@ -134,8 +134,48 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
 </footer>
 
 <script>
-const ro = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); ro.unobserve(e.target); }}), {threshold:.1,rootMargin:'0px 0px -30px 0px'});
-document.querySelectorAll('.rv,.rvl,.rvr').forEach(el => ro.observe(el));
+
+</script>
+<!-- ═══ DOWNLOAD MODAL ═══ -->
+<style>
+.dl-ov{display:none;position:fixed;inset:0;background:rgba(28,25,23,.55);backdrop-filter:blur(6px);z-index:9000;align-items:center;justify-content:center;padding:20px;}
+.dl-ov.open{display:flex;}
+.dl-mo{background:#fff;border:1px solid #DDD8CF;border-radius:28px;padding:36px 32px;max-width:460px;width:100%;box-shadow:0 40px 100px rgba(28,25,23,.22);animation:dlP .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes dlP{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+.dl-mo h3{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1917;margin-bottom:8px;}
+.dl-mo p{font-size:.875rem;color:#6B6560;line-height:1.65;margin-bottom:24px;}
+.dl-st{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.dl-s{display:flex;gap:12px;padding:13px 15px;background:#EDE8DE;border:1px solid #DDD8CF;border-radius:12px;}
+.dl-sn{width:24px;height:24px;border-radius:50%;background:#7B5EA7;color:#fff;font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.dl-sb div{font-size:.85rem;font-weight:700;color:#1C1917;margin-bottom:2px;}
+.dl-sb p{font-size:.76rem;color:#6B6560;margin:0;line-height:1.5;}
+.dl-cd{background:#1C1917;border-radius:8px;padding:8px 13px;font-size:.72rem;color:rgba(255,255,255,.7);font-family:'Courier New',monospace;margin-top:5px;word-break:break-all;}
+.dl-acts{display:flex;gap:10px;flex-wrap:wrap;}
+.dl-try{flex:1;height:44px;border-radius:999px;background:#7B5EA7;color:#fff;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.dl-try:hover{background:#6B4E97;}
+.dl-cls{height:44px;padding:0 18px;border-radius:999px;background:#EDE8DE;color:#6B6560;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:600;border:1px solid #DDD8CF;cursor:pointer;transition:all .2s;}
+.dl-cls:hover{background:#E4DECE;color:#1C1917;}
+</style>
+<div class="dl-ov" id="dlOverlay" onclick="if(event.target===this)closeDownloadModal()">
+  <div class="dl-mo" role="dialog" aria-modal="true">
+    <h3>Get Flow on Windows</h3>
+    <p>Flow runs locally &mdash; open source, no installer needed. Ready in 2 minutes.</p>
+    <div class="dl-st">
+      <div class="dl-s"><div class="dl-sn">1</div><div class="dl-sb"><div>Clone the repo</div><div class="dl-cd">git clone https://github.com/sujitsadalage/whisperflow-clone.git</div></div></div>
+      <div class="dl-s"><div class="dl-sn">2</div><div class="dl-sb"><div>Add your Groq API key</div><p>Free key at <a href="https://console.groq.com" target="_blank" rel="noopener" style="color:#7B5EA7;">console.groq.com</a></p><div class="dl-cd">copy backend\.env.example backend\.env</div></div></div>
+      <div class="dl-s"><div class="dl-sn">3</div><div class="dl-sb"><div>Launch</div><div class="dl-cd">start.bat</div></div></div>
+    </div>
+    <div class="dl-acts">
+      <a href="app.html" class="dl-try">Try in Browser Instead</a>
+      <button class="dl-cls" onclick="closeDownloadModal()">Close</button>
+    </div>
+  </div>
+</div>
+<script>
+function openDownloadModal(){document.getElementById('dlOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeDownloadModal(){document.getElementById('dlOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDownloadModal();});
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}}),{threshold:0,rootMargin:'0px'});document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el=>ro.observe(el));document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight&&r.bottom>0)el.classList.add('on');});});
 </script>
 </body>
 </html>

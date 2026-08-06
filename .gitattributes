@@ -4,5 +4,4 @@
 # Windows batch files use CRLF
 *.bat text eol=crlf
 
-# Everything else — auto-detect
-* text=auto
+# Everything else — auto-dete

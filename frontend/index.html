@@ -38,10 +38,10 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
 ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:var(--cream);} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
 /* ── SCROLL REVEAL ── */
-.rv  {opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
-.rvl {opacity:0;transform:translateX(-44px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
-.rvr {opacity:0;transform:translateX(44px);transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
-.rvs {opacity:0;transform:scale(.93);transition:opacity .75s var(--ease-out),transform .75s var(--ease-out);}
+.rv  {opacity:1;transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvl {opacity:1;transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvr {opacity:1;transition:opacity .8s var(--ease-out),transform .8s var(--ease-out);}
+.rvs {opacity:1;transition:opacity .75s var(--ease-out),transform .75s var(--ease-out);}
 .rv.on,.rvl.on,.rvr.on,.rvs.on{opacity:1;transform:none;}
 .d1{transition-delay:.08s!important;} .d2{transition-delay:.16s!important;}
 .d3{transition-delay:.24s!important;} .d4{transition-delay:.32s!important;}
@@ -125,7 +125,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
         <span></span><span></span><span></span>
       </button>
       <a href="app.html" class="nav-try">Try Flow</a>
-      <a href="app.html" class="btn btn-purple btn-sm">
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-purple btn-sm">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Download for Windows
       </a>
@@ -147,7 +147,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
     <a href="contact.html" class="mob-nav-a">Contact</a>
     <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;">
       <a href="app.html" class="btn btn-outline" style="justify-content:center;">Try Flow</a>
-      <a href="app.html" class="btn btn-purple" style="justify-content:center;">Download for Windows</a>
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-purple" style="justify-content:center;">Download for Windows</a>
     </div>
   </div>
 </div>
@@ -238,7 +238,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
     </h1>
     <p class="hero-sub">The voice-to-text AI that turns speech into clear, polished writing — in every app, instantly.</p>
     <div class="hero-btns">
-      <a href="app.html" class="btn btn-purple btn-lg">
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-purple btn-lg">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Download for Windows
       </a>
@@ -449,7 +449,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
     </div>
     <div class="rv" style="margin-top:40px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <a href="app.html" class="btn btn-outline">Try Flow Free</a>
-      <a href="app.html" class="btn btn-purple">
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-purple">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Download for Windows
       </a>
@@ -635,7 +635,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
         <h2 class="wf-heading">Write faster in all your apps,<br/><em>on any device</em></h2>
         <p class="wf-sub">Seamless speech-to-text in every application on your phone or computer. One hotkey, infinite reach.</p>
         <div class="wf-btns">
-          <a href="app.html" class="wf-btn-w">
+          <a href="#" onclick="openDownloadModal();return false;" class="wf-btn-w">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
             Download for Windows
           </a>
@@ -727,7 +727,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
       <p class="ai-lead">Speak naturally and Flow transcribes and edits your voice, instantly. Rambled thoughts become clear, perfectly formatted text — without filler words or typos.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <a href="app.html" class="btn btn-outline">Try Flow</a>
-        <a href="app.html" class="btn btn-purple">
+        <a href="#" onclick="openDownloadModal();return false;" class="btn btn-purple">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
           Download for Windows
         </a>
@@ -807,7 +807,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
         <button class="dev-btn" onclick="selDev(this)">iPhone</button>
         <button class="dev-btn" onclick="selDev(this)">Android</button>
       </div>
-      <a href="app.html" class="btn btn-dark" style="background:#fff;color:var(--ink);">
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-dark" style="background:#fff;color:var(--ink);">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Download for Windows
       </a>
@@ -881,7 +881,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 22px;border-radius:var(--r);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);font-size:.85rem;font-weight:600;text-decoration:none;font-family:'Inter',sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Try Flow</a>
-        <a href="app.html" style="display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 22px;border-radius:var(--r);background:var(--purple);color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;font-family:'Inter',sans-serif;border:none;transition:all .2s;" onmouseover="this.style.background='#6B4E97'" onmouseout="this.style.background='var(--purple)'">
+        <a href="#" onclick="openDownloadModal();return false;" style="display:inline-flex;align-items:center;gap:7px;height:46px;padding:0 22px;border-radius:var(--r);background:var(--purple);color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;font-family:'Inter',sans-serif;border:none;transition:all .2s;" onmouseover="this.style.background='#6B4E97'" onmouseout="this.style.background='var(--purple)'">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
           Download for Windows
         </a>
@@ -991,7 +991,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
     <h2 class="cta-h2">Start <em>flowing.</em></h2>
     <p class="cta-sub">Effortless voice dictation in every application. 4× faster than typing, AI-powered, built by Sujit Sadalage.</p>
     <div class="cta-btns">
-      <a href="app.html" class="btn btn-lg" style="background:#fff;color:var(--ink);">
+      <a href="#" onclick="openDownloadModal();return false;" class="btn btn-lg" style="background:#fff;color:var(--ink);">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--ink)"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
         Download for Windows
       </a>
@@ -1176,12 +1176,6 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);ove
 </footer>
 
 <script>
-/* ── SCROLL REVEAL ── */
-const ro = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); }});
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el => ro.observe(el));
-
 /* ── NAVBAR SCROLL ── */
 window.addEventListener('scroll', () => {
   const p = document.getElementById('navPill');
@@ -1287,7 +1281,7 @@ function submitContact(e) {
   }, 1200);
 }
 
-/* ── SMOOTH SCROLL ── */
+/* ── SMOOTH SCROLL: same-page clicks on #anchors ── */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const id = a.getAttribute('href').slice(1);
@@ -1295,6 +1289,85 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
+
+/* ── SMOOTH SCROLL: hash-in-URL on page load (fixes cross-page links
+   like "use-cases.html#developers" or "index.html#contact" that arrive
+   with a hash already in the address bar) ── */
+window.addEventListener('load', () => {
+  if (!window.location.hash) return;
+  const id = window.location.hash.slice(1);
+  const el = document.getElementById(id);
+  if (el) {
+    // slight delay lets images/fonts settle so scroll position is accurate
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+});
+</script>
+<!-- ═══ DOWNLOAD MODAL ═══ -->
+<style>
+.dl-overlay{display:none;position:fixed;inset:0;background:rgba(28,25,23,.55);backdrop-filter:blur(6px);z-index:9000;align-items:center;justify-content:center;padding:20px;}
+.dl-overlay.open{display:flex;}
+.dl-modal{background:var(--white);border:1px solid var(--border);border-radius:28px;padding:40px 36px;max-width:480px;width:100%;box-shadow:0 40px 100px rgba(28,25,23,.22);animation:dlPop .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes dlPop{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+.dl-icon{width:56px;height:56px;border-radius:16px;background:var(--purple-pale);border:1px solid rgba(123,94,167,.18);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+.dl-h{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.65rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.dl-sub{font-size:.88rem;color:var(--ink-muted);line-height:1.65;margin-bottom:28px;}
+.dl-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
+.dl-step{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--cream-dark);border:1px solid var(--border-light);border-radius:14px;}
+.dl-step-num{width:26px;height:26px;border-radius:50%;background:var(--purple);color:#fff;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.dl-step-body{flex:1;}
+.dl-step-title{font-size:.875rem;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.dl-step-desc{font-size:.78rem;color:var(--ink-muted);line-height:1.55;}
+.dl-code{background:var(--ink);border-radius:8px;padding:9px 14px;font-size:.73rem;color:rgba(255,255,255,.75);font-family:'Courier New',monospace;margin-top:6px;word-break:break-all;}
+.dl-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.dl-btn-try{flex:1;height:46px;border-radius:var(--r);background:var(--purple);color:#fff;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.dl-btn-try:hover{background:#6B4E97;}
+.dl-btn-close{height:46px;padding:0 20px;border-radius:var(--r);background:var(--cream-dark);color:var(--ink-muted);font-family:'Inter',sans-serif;font-size:.875rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.dl-btn-close:hover{background:var(--cream-deep);color:var(--ink);}
+</style>
+<div class="dl-overlay" id="dlOverlay" onclick="if(event.target===this)closeDownloadModal()">
+  <div class="dl-modal" role="dialog" aria-modal="true" aria-label="Get Flow for Windows">
+    <div class="dl-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+    </div>
+    <div class="dl-h">Get Flow on Windows</div>
+    <p class="dl-sub">Flow is an open-source app you run locally. Get set up in under 2 minutes &mdash; no installer needed.</p>
+    <div class="dl-steps">
+      <div class="dl-step">
+        <div class="dl-step-num">1</div>
+        <div class="dl-step-body">
+          <div class="dl-step-title">Clone the repository</div>
+          <div class="dl-code">git clone https://github.com/sujitsadalage/whisperflow-clone.git<br/>cd whisperflow-clone</div>
+        </div>
+      </div>
+      <div class="dl-step">
+        <div class="dl-step-num">2</div>
+        <div class="dl-step-body">
+          <div class="dl-step-title">Add your free Groq API key</div>
+          <div class="dl-step-desc">Get a free key at <a href="https://console.groq.com" target="_blank" rel="noopener" style="color:var(--purple);">console.groq.com</a>, then:</div>
+          <div class="dl-code">cd backend<br/>copy .env.example .env<br/># paste your GROQ_API_KEY</div>
+        </div>
+      </div>
+      <div class="dl-step">
+        <div class="dl-step-num">3</div>
+        <div class="dl-step-body">
+          <div class="dl-step-title">Start the app</div>
+          <div class="dl-code">start.bat</div>
+          <div class="dl-step-desc" style="margin-top:5px;">Starts backend, hotkey service, and Electron overlay.</div>
+        </div>
+      </div>
+    </div>
+    <div class="dl-actions">
+      <a href="app.html" class="dl-btn-try">Try in Browser Instead</a>
+      <button class="dl-btn-close" onclick="closeDownloadModal()">Close</button>
+    </div>
+  </div>
+</div>
+<script>
+function openDownloadModal(){document.getElementById('dlOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeDownloadModal(){document.getElementById('dlOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDownloadModal();});
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}}),{threshold:0,rootMargin:'0px'});document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el=>ro.observe(el));document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(function(el){var r=el.getBoundingClientRect();if(r.top<window.innerHeight&&r.bottom>0)el.classList.add('on');});});
 </script>
 </body>
 </html>

@@ -674,7 +674,30 @@ pip install -r requirements.txt
 python service.py
 ```
 
+<<<<<<< Updated upstream
 ---
+=======
+| Action | What happens |
+|--------|-------------|
+| Hold **Ctrl** (0.5s) | Recording starts 🔴 (high beep) |
+| Release **Ctrl** | Transcribes → polishes → auto-types result ✨ (mid beep) |
+| Press **ESC** during recording | Cancels — discards audio, types nothing (double low beep) |
+| **Shift+ESC** | Quit the service |
+
+### Raw vs AI-polished output
+
+By default the service polishes with AI before typing. To type the raw transcript exactly as spoken, set `FLOW_AUTO_POLISH=false` in `backend/.env` or as an environment variable:
+
+```bash
+# Windows
+set FLOW_AUTO_POLISH=false && python service.py
+
+# Linux / macOS
+FLOW_AUTO_POLISH=false python service.py
+```
+
+The browser app has the same toggle — **✎ Type Exact** / **✦ Improve with AI** — visible on the mic card.
+>>>>>>> Stashed changes
 
 ## Hotkeys
 
@@ -750,7 +773,33 @@ Flow is production-ready and can be deployed to:
 
 ---
 
+<<<<<<< Updated upstream
 ## Required Environment Variables
+=======
+## Docker
+
+The backend (API + frontend) runs in a single container. The hotkey service and Electron overlay still run locally — they need mic access and system keyboard hooks which don't work inside Docker.
+
+```bash
+# Build and start
+docker compose up --build
+
+# Then open http://localhost:8000
+```
+
+Or without compose:
+
+```bash
+docker build -t flow-backend .
+docker run -p 8000:8000 --env-file backend/.env flow-backend
+```
+
+Make sure `backend/.env` exists with your `GROQ_API_KEY` before running.
+
+---
+
+## Troubleshooting
+>>>>>>> Stashed changes
 
 ```env
 GROQ_API_KEY=your_key

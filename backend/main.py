@@ -6,13 +6,15 @@ Production-ready FastAPI backend for deployment.
 
 import os
 import json
+import time
 import tempfile
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, UploadFile, File, Form, WebSocket, WebSocketDisconnect, Request
+from fastapi import FastAPI, UploadFile, File, Form, WebSocket, WebSocketDisconnect, Request, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.security import APIKeyHeader
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -30,9 +32,52 @@ ALLOWED_ORIGINS = os.getenv(
     "http://localhost:8000,http://localhost:3000,http://127.0.0.1:8000"
 ).split(",")
 
+# ── Validate GROQ_API_KEY at startup ─────────────────────────────────────────
+if not GROQ_API_KEY:
+    log.error("GROQ_API_KEY is not set. Add it to backend/.env and restart.")
+    raise SystemExit("Missing GROQ_API_KEY — see backend/.env.example")
+if not GROQ_API_KEY.startswith("gsk_") or len(GROQ_API_KEY) < 20:
+    log.warning("GROQ_API_KEY looks invalid (should start with 'gsk_'). Continuing, but API calls may fail.")
+
 # In production allow *, set ALLOWED_ORIGINS env var instead of hardcoding
 if ENVIRONMENT == "production":
     ALLOWED_ORIGINS = ["*"]
+
+# ── Rate limiting ─────────────────────────────────────────────────────────────
+# Simple in-memory rate limiter: max requests per IP per window
+RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "30"))   # requests
+RATE_LIMIT_WINDOW   = int(os.getenv("RATE_LIMIT_WINDOW",   "60"))   # seconds
+_rate_store: dict[str, list[float]] = {}
+
+def _get_client_ip(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+def rate_limit(request: Request):
+    """Dependency: raises 429 if IP exceeds RATE_LIMIT_REQUESTS in RATE_LIMIT_WINDOW seconds."""
+    ip  = _get_client_ip(request)
+    now = time.time()
+    window_start = now - RATE_LIMIT_WINDOW
+    hits = _rate_store.get(ip, [])
+    # prune old hits
+    hits = [t for t in hits if t > window_start]
+    if len(hits) >= RATE_LIMIT_REQUESTS:
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Try again shortly.")
+    hits.append(now)
+    _rate_store[ip] = hits
+
+# ── Optional API-key auth ─────────────────────────────────────────────────────
+# Set FLOW_API_KEY in .env to require a bearer token on /api/* routes.
+# Leave blank to allow unauthenticated access (dev default).
+FLOW_API_KEY = os.getenv("FLOW_API_KEY", "")
+_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+def verify_api_key(key: str = Depends(_api_key_header)):
+    """Dependency: if FLOW_API_KEY is configured, enforce it on API routes."""
+    if FLOW_API_KEY and key != FLOW_API_KEY:
+        raise HTTPException(status_code=401, detail="Invalid or missing X-API-Key header.")
 
 # ── Groq client (lazy init so missing key doesn't crash startup) ───────────────
 _groq_client: Groq | None = None
@@ -113,7 +158,7 @@ async def health():
     return {"status": "ok", "environment": ENVIRONMENT, "groq_configured": bool(GROQ_API_KEY)}
 
 @app.post("/api/transcribe")
-async def transcribe_audio(audio: UploadFile = File(...)):
+async def transcribe_audio(audio: UploadFile = File(...), request: Request = None, _rl=Depends(rate_limit), _auth=Depends(verify_api_key)):
     """Transcribe audio using Groq Whisper Large v3."""
     tmp_path = None
     try:
@@ -152,6 +197,9 @@ async def transcribe_audio(audio: UploadFile = File(...)):
 async def polish_text(
     text: str = Form(...),
     context: str = Form(default="general"),
+    request: Request = None,
+    _rl=Depends(rate_limit),
+    _auth=Depends(verify_api_key),
 ):
     """Polish transcribed text using Groq LLaMA 3.1."""
     if not text.strip():

@@ -32,6 +32,9 @@ WS_API_BASE = API_BASE.replace("http://", "ws://").replace("https://", "wss://")
 CONTEXT     = os.getenv("FLOW_CONTEXT", "general")
 WS_PORT     = 8765          # overlay WebSocket port
 
+# Set FLOW_AUTO_POLISH=false to type the raw transcript without AI polishing
+AUTO_POLISH = os.getenv("FLOW_AUTO_POLISH", "true").lower() not in ("false", "0", "no")
+
 CHUNK    = 1024
 FORMAT   = pyaudio.paInt16
 CHANNELS = 1
@@ -94,29 +97,60 @@ class FlowService:
         self.recording      = False
         self.audio_frames   = []
         self.ctrl_pressed   = False
+        self.cancelled      = False      # True when ESC is pressed mid-recording
         self.record_thread  = None
         self.pa             = pyaudio.PyAudio()
         self.mic_stream     = None
+        self._shift_pressed = False
 
         print("━" * 52)
         print("  Flow — Global Hotkey Service")
         print("  Built by Sujit Sadalage")
         print("━" * 52)
-        print(f"  API      : {API_BASE}")
-        print(f"  Context  : {CONTEXT}")
-        print(f"  Overlay  : ws://127.0.0.1:{WS_PORT}")
+        print(f"  API        : {API_BASE}")
+        print(f"  Context    : {CONTEXT}")
+        print(f"  Auto-Polish: {'ON' if AUTO_POLISH else 'OFF (typing raw transcript)'}")
+        print(f"  Overlay    : ws://127.0.0.1:{WS_PORT}")
         print()
         print("  Hold Ctrl  →  start recording")
         print("  Release    →  transcribe + polish + type")
-        print("  ESC        →  quit")
+        print("  ESC        →  cancel current recording")
+        print("  Shift+ESC  →  quit service")
         print("━" * 52)
+
+    # ── Audio feedback ────────────────────────────────────────────────────────
+    @staticmethod
+    def _beep(frequency: int = 880, duration_ms: int = 80, volume: float = 0.25):
+        """Play a short beep using PyAudio (non-blocking via thread)."""
+        def _play():
+            try:
+                import math
+                pa = pyaudio.PyAudio()
+                rate = 44100
+                samples = int(rate * duration_ms / 1000)
+                stream = pa.open(format=pyaudio.paFloat32, channels=1, rate=rate, output=True)
+                # Simple sine wave with a short fade-out to avoid click
+                buf = bytes()
+                for i in range(samples):
+                    fade = 1.0 - (i / samples) ** 0.5   # sqrt fade
+                    val = volume * fade * math.sin(2 * math.pi * frequency * i / rate)
+                    buf += __import__('struct').pack('<f', val)
+                stream.write(buf)
+                stream.stop_stream()
+                stream.close()
+                pa.terminate()
+            except Exception:
+                pass   # beep is best-effort; never crash the service
+        threading.Thread(target=_play, daemon=True).start()
 
     # ── Recording ─────────────────────────────────────────────────────────────
     def start_recording(self):
         self.recording    = True
+        self.cancelled    = False
         self.audio_frames = []
         broadcast("recording")
         print("  🔴 Recording…")
+        self._beep(frequency=880, duration_ms=80)   # high beep = start
         try:
             self.mic_stream = self.pa.open(
                 format=FORMAT, channels=CHANNELS,
@@ -137,6 +171,16 @@ class FlowService:
         self.recording = False
         if self.record_thread:
             self.record_thread.join(timeout=2)
+
+        if self.cancelled:
+            broadcast("cancelled", "Recording discarded")
+            print("  ✋ Recording cancelled")
+            self._beep(frequency=300, duration_ms=120)  # low double beep = cancel
+            time.sleep(0.12)
+            self._beep(frequency=300, duration_ms=120)
+            return
+
+        self._beep(frequency=660, duration_ms=80)   # mid beep = stop/processing
 
         if not self.audio_frames:
             broadcast("no_speech", "No audio captured")
@@ -172,21 +216,26 @@ class FlowService:
 
             print(f"  📝 {raw_text[:70]}{'…' if len(raw_text) > 70 else ''}")
 
-            # 2. Polish + real-time type via WebSocket stream ──────────────────
-            broadcast("polishing", "AI polishing…")
-            print("  ✨ Polishing + typing in real time…")
-
-            # Small delay so cursor stays in the target window after Ctrl release
-            time.sleep(0.35)
-
-            full_text = self._stream_polish_and_type(raw_text)
-
-            if full_text:
-                broadcast("done", "Done ✨")
-                print(f"  ✅ Typed: {full_text[:60]}{'…' if len(full_text) > 60 else ''}")
+            # 2. Polish or type raw depending on AUTO_POLISH setting ───────────
+            if AUTO_POLISH:
+                broadcast("polishing", "AI polishing…")
+                print("  ✨ Polishing + typing in real time…")
+                # Small delay so cursor stays in the target window after Ctrl release
+                time.sleep(0.35)
+                full_text = self._stream_polish_and_type(raw_text)
+                if full_text:
+                    broadcast("done", "Done ✨")
+                    print(f"  ✅ Typed: {full_text[:60]}{'…' if len(full_text) > 60 else ''}")
+                else:
+                    _type_text(raw_text)
+                    broadcast("done", "Done (raw)")
             else:
+                broadcast("typing", raw_text[:50])
+                print("  ⌨️  Typing raw transcript…")
+                time.sleep(0.35)
                 _type_text(raw_text)
-                broadcast("done", "Done ✨")
+                broadcast("done", "Done")
+                print(f"  ✅ Typed (raw): {raw_text[:60]}{'…' if len(raw_text) > 60 else ''}")
 
         except requests.exceptions.ConnectionError:
             msg = f"Cannot connect to {API_BASE}"
@@ -203,8 +252,10 @@ class FlowService:
 
     def _stream_polish_and_type(self, raw_text: str) -> str:
         """
-        Connect to backend WebSocket, receive tokens in real time,
-        type each token as it arrives, broadcast preview to overlay.
+        Connect to backend WebSocket, receive tokens in real time.
+        Broadcasts a live preview to the overlay as tokens arrive,
+        then types the complete polished text in ONE paste at the end
+        (avoids clipboard-race from per-token pasting).
         Returns the full polished text (empty string on failure).
         """
         ws_url = f"{WS_API_BASE}/ws/stream"
@@ -233,13 +284,11 @@ class FlowService:
                 elif t == "token":
                     token = pkt.get("token", "")
                     full += token
-                    # Type the token immediately (real-time)
-                    _type_text(token)
-                    # Broadcast last ~40 chars as preview
+                    # Broadcast last ~40 chars as overlay preview ONLY — don't type yet
                     broadcast("token", full[-40:])
 
                 elif t == "done":
-                    full = pkt.get("full_text", full)
+                    full = pkt.get("full_text", full).strip()
                     break
 
                 elif t == "error":
@@ -247,6 +296,11 @@ class FlowService:
                     break
 
             ws.close()
+
+            # Type the complete polished text in one shot (no clipboard race)
+            if full:
+                _type_text(full)
+
             return full
 
         except Exception as e:
@@ -273,6 +327,21 @@ class FlowService:
                 if not self.ctrl_pressed:
                     self.ctrl_pressed = True
                     threading.Timer(0.4, self._try_start).start()
+            elif key == keyboard.Key.esc:
+                if self.recording:
+                    # ESC mid-recording: cancel (discard audio, don't type anything)
+                    print("  ✋ ESC pressed — cancelling recording")
+                    self.cancelled = True
+                    self.recording = False
+                    threading.Thread(
+                        target=self.stop_and_process, daemon=True
+                    ).start()
+                elif self._shift_pressed:
+                    # Shift+ESC when idle: quit the service
+                    print("\n  👋 Shift+ESC — Stopped.")
+                    return False
+            elif key in (keyboard.Key.shift, keyboard.Key.shift_r, keyboard.Key.shift_l):
+                self._shift_pressed = True
         except Exception:
             pass
 
@@ -285,9 +354,8 @@ class FlowService:
 
     def on_release(self, key):
         try:
-            if key == keyboard.Key.esc:
-                print("\n  👋 Stopped.")
-                return False
+            if key in (keyboard.Key.shift, keyboard.Key.shift_r, keyboard.Key.shift_l):
+                self._shift_pressed = False
             if key in (keyboard.Key.ctrl_r, keyboard.Key.ctrl_l):
                 self.ctrl_pressed = False
                 if self.recording:
@@ -307,21 +375,45 @@ class FlowService:
 
 # ── Auto-type helper ──────────────────────────────────────────────────────────
 def _type_text(text: str):
-    """Type text via clipboard paste (unicode-safe) or pyautogui fallback."""
+    """
+    Type text via clipboard paste (unicode-safe, handles any character).
+    Saves and restores the clipboard so user doesn't lose what they had copied.
+    Falls back to pyautogui.typewrite for ASCII-only text if pyperclip is absent.
+    """
     if not text:
         return
     try:
         import pyperclip
         import pyautogui
+
+        # Save previous clipboard contents so we can restore after paste
+        try:
+            previous = pyperclip.paste()
+        except Exception:
+            previous = ""
+
         pyperclip.copy(text)
+        time.sleep(0.05)          # let clipboard settle before pasting
         pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.02)   # small gap between tokens so paste doesn't merge
+        time.sleep(0.12)          # wait for paste to land in target window
+
+        # Restore previous clipboard after a short delay
+        def _restore():
+            time.sleep(0.4)
+            try:
+                pyperclip.copy(previous)
+            except Exception:
+                pass
+        threading.Thread(target=_restore, daemon=True).start()
+
     except ImportError:
         try:
             import pyautogui
-            pyautogui.typewrite(text, interval=0.018)
+            # typewrite only works reliably with ASCII; warn for non-ASCII
+            safe = text.encode("ascii", errors="replace").decode("ascii")
+            pyautogui.typewrite(safe, interval=0.018)
         except Exception as e:
-            print(f"  ⚠️  Could not type: {e}")
+            print(f"  ⚠️  Could not type text: {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

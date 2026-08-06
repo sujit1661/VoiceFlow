@@ -215,6 +215,12 @@ select.ctx-sel:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(123,94
         <span id="timerDisp" style="font-family:'Inter',monospace;font-weight:700;">00:00</span>
       </div>
       <p class="mic-hint">Click the mic, or hold <span class="kbd-chip">Ctrl</span> anywhere on the page</p>
+      <!-- ── Dictation mode picker ── -->
+      <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+        <span style="font-size:.72rem;color:var(--ink-l);font-weight:600;letter-spacing:.06em;text-transform:uppercase;">Mode:</span>
+        <button id="modeRawBtn"  onclick="setMode('raw')"  style="height:30px;padding:0 14px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--cream-d);color:var(--ink-m);transition:all .18s;" title="Type exactly what you said">✎ Type Exact</button>
+        <button id="modeAiBtn"   onclick="setMode('ai')"   style="height:30px;padding:0 14px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--cream-d);color:var(--ink-m);transition:all .18s;" title="Clean up with AI">✦ Improve with AI</button>
+      </div>
     </div>
 
     <!-- Output card -->
@@ -451,6 +457,7 @@ function init() {
   renderHistory();
   checkBackend();
   setInterval(checkBackend, 20000);
+  updateModeButtons();
 }
 
 // ── Settings panel ──────────────────────────────
@@ -486,6 +493,35 @@ function toggleAutoPolish() {
   if (autoPolishCb) autoPolishCb.checked = S.autoPolish;
   if (togTrack) togTrack.classList.toggle('on', S.autoPolish);
   localStorage.setItem('flow_autoPolish', S.autoPolish);
+  updateModeButtons();
+}
+
+// ── Mode buttons (main UI) ──────────────────────
+function setMode(mode) {
+  S.autoPolish = (mode === 'ai');
+  if (autoPolishCb) autoPolishCb.checked = S.autoPolish;
+  if (togTrack) togTrack.classList.toggle('on', S.autoPolish);
+  localStorage.setItem('flow_autoPolish', S.autoPolish);
+  updateModeButtons();
+}
+function updateModeButtons() {
+  const rawBtn = $('modeRawBtn'), aiBtn = $('modeAiBtn');
+  if (!rawBtn || !aiBtn) return;
+  if (S.autoPolish) {
+    aiBtn.style.background  = 'var(--purple)';
+    aiBtn.style.color       = '#fff';
+    aiBtn.style.borderColor = 'var(--purple)';
+    rawBtn.style.background = 'var(--cream-d)';
+    rawBtn.style.color      = 'var(--ink-m)';
+    rawBtn.style.borderColor= 'var(--border)';
+  } else {
+    rawBtn.style.background = 'var(--ink)';
+    rawBtn.style.color      = '#fff';
+    rawBtn.style.borderColor= 'var(--ink)';
+    aiBtn.style.background  = 'var(--cream-d)';
+    aiBtn.style.color       = 'var(--ink-m)';
+    aiBtn.style.borderColor = 'var(--border)';
+  }
 }
 
 if (testConnBtn) testConnBtn.addEventListener('click', async () => {

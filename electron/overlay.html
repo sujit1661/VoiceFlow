@@ -198,14 +198,16 @@ const elCheck   = document.getElementById('check');
 
 // ── State config ──────────────────────────────────────────────────────────────
 const STATES = {
-  idle:       { dot:'rgba(156,149,144,.5)', main:'Flow',         sub:'Hold Ctrl to record',       right:null,       autohide:3500 },
-  recording:  { dot:'#4ADE80',             main:'Recording',    sub:'Release Ctrl to stop…',     right:'wave',     autohide:null },
-  processing: { dot:'#7B5EA7',             main:'Transcribing', sub:'Sending to Whisper…',       right:'spinner',  autohide:null },
-  polishing:  { dot:'#9B7EC8',             main:'Polishing',    sub:'AI cleaning text…',         right:'spinner',  autohide:null },
-  typing:     { dot:'#9B7EC8',             main:'Typing',       sub:'',                          right:'pulse',    autohide:null },
-  done:       { dot:'#4ADE80',             main:'Done ✨',       sub:'Text typed successfully',   right:'check',    autohide:1800 },
-  no_speech:  { dot:'#E87D2E',             main:'No speech',    sub:'Try speaking louder',        right:null,       autohide:2200 },
-  error:      { dot:'#EF4444',             main:'Error',        sub:'',                          right:null,       autohide:2500 },
+  idle:       { dot:'rgba(156,149,144,.5)', main:'Flow',         sub:'Hold Ctrl to record',        right:null,       autohide:3500 },
+  recording:  { dot:'#4ADE80',             main:'Recording',    sub:'Release Ctrl to stop…',      right:'wave',     autohide:null },
+  processing: { dot:'#7B5EA7',             main:'Transcribing', sub:'Sending to Whisper…',        right:'spinner',  autohide:null },
+  polishing:  { dot:'#9B7EC8',             main:'Polishing',    sub:'AI cleaning text…',          right:'spinner',  autohide:null },
+  typing:     { dot:'#9B7EC8',             main:'Typing',       sub:'',                           right:'pulse',    autohide:null },
+  token:      { dot:'#9B7EC8',             main:'Typing',       sub:'',                           right:'pulse',    autohide:null },
+  done:       { dot:'#4ADE80',             main:'Done ✨',       sub:'Text typed successfully',    right:'check',    autohide:1800 },
+  no_speech:  { dot:'#E87D2E',             main:'No speech',    sub:'Try speaking louder',         right:null,       autohide:2200 },
+  cancelled:  { dot:'#E87D2E',             main:'Cancelled',    sub:'Recording discarded',         right:null,       autohide:1800 },
+  error:      { dot:'#EF4444',             main:'Error',        sub:'',                           right:null,       autohide:2500 },
 };
 
 // ── Timer ─────────────────────────────────────────────────────────────────────
@@ -278,7 +280,7 @@ function applyState(key, text) {
   showRight(cfg.right);
   showPill();
 
-  if (key === 'error' || key === 'no_speech') {
+  if (key === 'error' || key === 'no_speech' || key === 'cancelled') {
     pill.classList.remove('shake');
     void pill.offsetWidth;   // reflow to restart animation
     pill.classList.add('shake');
